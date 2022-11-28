@@ -1,0 +1,17 @@
+// NEED TO BE EDITED
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0px 15px;
+  overflow-x: hidden;
+
+  @media screen and (min-width: $mobile) {
+    width: $mobile;
+  }
+  @media screen and (min-width: $tablet) {
+    width: $tablet;
+  }
+  @media screen and (min-width: $desktop) {
+    width: $desktop;
+  }
+}

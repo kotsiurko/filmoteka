@@ -1,0 +1,82 @@
+// NEED TO BE EDITED
+
+// html {
+//   box-sizing: border-box;
+//   scroll-behavior: smooth;
+// }
+
+// *,
+// *::before,
+// *::after {
+//   box-sizing: inherit;
+// }
+
+body {
+  // font-family: 'Montserrat', 'Seymour One', sans-serif;
+  // background-color: $backgroundColor;
+  // color: $mainColorText;
+  // font-size: 16px;
+  // letter-spacing: 0.03em;
+  // overflow-x: hidden;
+  // cursor: url(../images/header/cursor.png), pointer;
+  height: 100%;
+}
+
+// body::-webkit-scrollbar-thumb {
+//   background-color: transparent;
+//   border-radius: 20px;
+//   border: 3px solid $acentColor;
+// }
+
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6,
+// p {
+//   margin: 0;
+// }
+
+// ul {
+//   list-style: none;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// img {
+//   display: block;
+//   max-width: 100%;
+//   height: auto;
+// }
+
+// a {
+//   text-decoration: none;
+//   font-style: normal;
+//   cursor: url(../images/header/3.png), pointer;
+// }
+
+// .visually-hidden {
+//   position: absolute;
+//   width: 1px;
+//   height: 1px;
+//   margin: -1px;
+//   border: 0;
+//   padding: 0;
+
+//   white-space: nowrap;
+//   clip-path: inset(100%);
+//   clip: rect(0 0 0 0);
+//   overflow: hidden;
+// }
+
+.wrapper {
+  overflow: hidden;
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.wrapper > main {
+  flex-grow: 1;
+}
