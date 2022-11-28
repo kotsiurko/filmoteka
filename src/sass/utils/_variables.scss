@@ -1,14 +1,18 @@
 // Колір тексту
-$page-color: #131313;
+$page-color: #000000;
 // Колір ключів/заголовків властивостей до опису фільму
-$description-color: #8C8C8C;
+$description-color: #8c8c8c;
 // Просто білий))
-$white-color: #FFFFFF;
+$white-color: #ffffff;
 // Колір кнопок, підписів карток фільмів, лейбла із оцінкою фільму
-$accent-color: #FF6B08;
+$accent-color: #ff6b08;
 // Колір псевдоелемента - нижньої риски під активним меню в хедері
 // а також error-повідомлення під полем пошуку
-$menu-highlight: #FF001B;
+$menu-highlight: #ff001b;
 // Колір фону футера
-$footer-bg-color: #F7F7F7;
+$footer-bg-color: #f7f7f7;
 $footer-text-color: #545454;
+
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1200px;
