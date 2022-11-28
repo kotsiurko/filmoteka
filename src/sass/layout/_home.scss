@@ -1,0 +1,50 @@
+.home {
+  padding: 20px 0 40px 0;
+}
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.card {
+  &__img {
+    position: relative;
+    padding-bottom: 143.571429%; /* 402/280 */
+    margin-bottom: 10px;
+    &:hover,
+    &:focus {
+      box-shadow: 10px 10px 10px black;
+    }
+  }
+  &__img img {
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  &__info {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.17;
+  }
+  &__title {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: $page-color;
+  }
+  &__genres {
+    display: inline-flex;
+    flex-wrap: wrap;
+    color: $accent-color;
+  }
+  &__year {
+    display: inline-flex;
+    color: $accent-color;
+  }
+}
