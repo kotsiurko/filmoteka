@@ -1,8 +1,8 @@
-// NEED TO BE EDITED
-
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
+  // styles for sticky footer
+  height: 100%;
 }
 
 *,
@@ -16,6 +16,11 @@ body {
   color: $page-color;
   font-size: 12px;
   cursor: pointer;
+
+  // styles for sticky footer
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 body::-webkit-scrollbar-thumb {
@@ -64,4 +69,10 @@ a {
   clip-path: inset(100%);
   clip: rect(0 0 0 0);
   overflow: hidden;
+}
+
+// styles for sticky footer
+.home,
+.library-content {
+  flex: 1 0 auto;
 }
