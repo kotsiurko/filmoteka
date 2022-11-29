@@ -19,6 +19,7 @@
 
 .card {
   border-radius: 5px;
+  @include transition(box-shadow);
   &:hover,
   &:focus {
     box-shadow: 2px 2px 5px $accent-color;
