@@ -6,17 +6,17 @@
 
 // bg
 
-.header-bg {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: $mobile;
+.endless-bg-img {
+  // margin-left: auto;
+  // margin-right: auto;
+  // max-width: $mobile;
   min-height: 230px;
 
   background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
     url(../images/home-bg-s-@1x.jpg);
   background-color: #000000;
   background-position: center;
-  background-repeat: no-repeat;
+  // background-repeat: no-repeat;
   background-size: cover;
 
   @media screen and (max-width: ($tablet - 1)) and (min-device-pixel-ratio: 2),
@@ -27,7 +27,7 @@
   }
 
   @media screen and (min-width: $tablet) {
-    max-width: $tablet;
+    // max-width: $tablet;
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../images/home-bg-m-@1x.jpg);
 
@@ -43,7 +43,7 @@
   }
 
   @media screen and (min-width: $desktop) {
-    max-width: $desktop;
+    // max-width: $desktop;
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../images/home-bg-l-@1x.jpg);
 
@@ -118,12 +118,20 @@
   border: transparent;
   color: $white-color;
 
-  @include transition(color);
+  @include transition(color, stroke);
+
+  .search-field ~ & {
+    stroke:  $white-color;
+  }
 
   .search-field:focus ~ & {
-    color: $accent-color;
+    stroke: $accent-color;
   }
 }
+
+// .search-icon{
+//   stroke:  $white-color;
+// }
 
 // warning
 
