@@ -137,21 +137,22 @@
 
 .header-warning {
   position: absolute;
-  top: 155px;
+  text-align: center;
+  top: 156px;
   font-size: 14px;
   line-height: 1.14;
 
   @media screen and (max-width: ($tablet - 1)) {
-    max-width: ($mobile - 40);
+    max-width: ($mobile );
   }
 
   @media screen and (min-width: $tablet) {
-    width: ($tablet - 152);
+    width: ($tablet - 78);
     text-align: center;
   }
 
   @media screen and (min-width: $desktop) {
-    width: ($desktop - 142);
+    width: ($desktop - 80);
     text-align: center;
   }
 
