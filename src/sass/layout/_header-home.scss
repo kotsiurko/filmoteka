@@ -16,7 +16,7 @@
     url(../images/home-bg-s-@1x.jpg);
   background-color: #000000;
   background-position: center;
-  // background-repeat: no-repeat;
+  background-repeat: no-repeat;
   background-size: cover;
 
   @media screen and (max-width: ($tablet - 1)) and (min-device-pixel-ratio: 2),
