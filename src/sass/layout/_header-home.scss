@@ -9,14 +9,12 @@
 .header-bg {
   margin-left: auto;
   margin-right: auto;
-
   max-width: $mobile;
   min-height: 230px;
 
   background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
     url(../images/home-bg-s-@1x.jpg);
   background-color: #000000;
-
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -30,7 +28,6 @@
 
   @media screen and (min-width: $tablet) {
     max-width: $tablet;
-
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../images/home-bg-m-@1x.jpg);
 
@@ -66,13 +63,11 @@
 
 .search-form {
   position: relative;
-
   text-align: center;
 }
 
 .search-field {
   width: 100%;
-
   font-size: 14px;
   line-height: 1.14;
 
@@ -83,9 +78,7 @@
   background-color: transparent;
   border: transparent;
   border-bottom: 1px solid $white-color;
-
   font-family: Roboto;
-
   color: $white-color;
 
   @include transition(border-bottom);
@@ -110,20 +103,19 @@
   position: absolute;
   top: 0;
   right: 0;
+  cursor: pointer;
 
   @media screen and (min-width: $tablet) {
-    right: 142px;
+    right: 185px;
   }
 
   @media screen and (min-width: $desktop) {
-    right: 273px;
+    right: 440px;
   }
 
   padding: 0;
-
   background-color: transparent;
   border: transparent;
-
   color: $white-color;
 
   @include transition(color);
@@ -138,7 +130,6 @@
 .header-warning {
   position: absolute;
   top: 155px;
-
   font-size: 14px;
   line-height: 1.14;
 

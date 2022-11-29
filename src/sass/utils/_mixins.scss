@@ -4,6 +4,7 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+
 @mixin _mobile {
   @media screen and (min-width: 320px) {
     @content;
