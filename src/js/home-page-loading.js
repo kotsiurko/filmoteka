@@ -40,6 +40,7 @@ onHomePageLoad();
 function renderHTML(films) {
     const markup = films
         .map(film => {
+            console.log(film);
 
             const newGenres = film.genre_ids.map(id => {
                 return genres.genres.map(jsonID => {
