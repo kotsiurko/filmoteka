@@ -106,11 +106,11 @@
   cursor: pointer;
 
   @media screen and (min-width: $tablet) {
-    right: 185px;
+    right: 145px;
   }
 
   @media screen and (min-width: $desktop) {
-    right: 440px;
+    right: 275px;
   }
 
   padding: 0;
@@ -121,7 +121,7 @@
   @include transition(color, stroke);
 
   .search-field ~ & {
-    stroke:  $white-color;
+    stroke: $white-color;
   }
 
   .search-field:focus ~ & {
@@ -143,7 +143,7 @@
   line-height: 1.14;
 
   @media screen and (max-width: ($tablet - 1)) {
-    max-width: ($mobile );
+    max-width: ($mobile);
   }
 
   @media screen and (min-width: $tablet) {
