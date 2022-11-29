@@ -6,7 +6,7 @@ html {
 // logo
 .logo {
   position: absolute;
-  top: 46px;
+  top: 45px;
 
   @media screen and (min-width: $tablet) {
     display: flex;
@@ -14,9 +14,7 @@ html {
   }
 
   text-decoration: none;
-
   color: $white-color;
-
   cursor: pointer;
 }
 
@@ -35,7 +33,6 @@ html {
   font-weight: 500;
   font-size: 30px;
   line-height: 1.16;
-
   color: $white-color;
 }
 
@@ -44,15 +41,12 @@ html {
 .side-nav {
   display: flex;
   justify-content: flex-end;
-
   margin-bottom: 40px;
-
   font-family: Roboto;
   font-weight: 500;
   font-size: 12px;
   line-height: 1.17;
   text-transform: uppercase;
-
   color: $white-color;
 }
 
@@ -64,7 +58,6 @@ html {
 
 .side-nav__link {
   text-decoration: none;
-
   color: inherit;
 }
 
@@ -77,10 +70,8 @@ html {
     position: absolute;
     bottom: -3px;
     left: 0;
-
     height: 3px;
     width: 100%;
-
-    background-color: $accent-color;
+    background-color: $menu-highlight;
   }
 }
