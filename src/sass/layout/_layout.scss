@@ -15,7 +15,6 @@ body {
   font-family: 'Roboto', sans-serif;
   color: $page-color;
   font-size: 12px;
-  cursor: pointer;
 
   // styles for sticky footer
   display: flex;
@@ -75,4 +74,8 @@ a {
 .home,
 .library-content {
   flex: 1 0 auto;
+}
+
+button {
+  padding: 0px;
 }

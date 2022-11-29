@@ -1,0 +1,50 @@
+.btn {
+  display: block;
+
+  width: 110px;
+  height: 44px;
+
+  padding: 0px 10px;
+
+  text-align: center;
+
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.33;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  border-radius: 5px;
+
+  @include transition(background-color);
+
+  @include _tablet {
+    min-width: 136px;
+  }
+
+  &__orange {
+    color: $white-color;
+    background-color: $accent-color;
+    border: 1px solid $accent-color;
+  }
+
+  &__transparent {
+    color: $page-color;
+    background: transparent;
+    border: 1px solid $page-color;
+  }
+
+  &__transpDarkBg {
+    color: $white-color;
+    background: transparent;
+    border: 1px solid $white-color;
+  }
+
+  &:hover,
+  &:focus {
+    border: 1px solid $accent-color;
+    background-color: $menu-highlight;
+  }
+}
