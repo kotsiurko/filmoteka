@@ -1,15 +1,8 @@
-// wrappers
-
 .header-section {
   padding-top: 58px;
 }
 
-// bg
-
 .endless-bg-img {
-  // margin-left: auto;
-  // margin-right: auto;
-  // max-width: $mobile;
   min-height: 230px;
 
   background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
@@ -26,8 +19,7 @@
       url(../images/home-bg-s-@2x.jpg);
   }
 
-  @media screen and (min-width: $tablet) {
-    // max-width: $tablet;
+  @include _tablet {
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../images/home-bg-m-@1x.jpg);
 
@@ -42,14 +34,11 @@
     }
   }
 
-  @media screen and (min-width: $desktop) {
-    // max-width: $desktop;
+  @include _desktop {
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../images/home-bg-l-@1x.jpg);
 
-    @media screen and (min-device-pixel-ratio: 2),
-      screen and (min-resolution: 192dpi),
-      screen and (min-resolution: 2dppx) {
+    @include retina {
       background-image: linear-gradient(
           rgba(0, 0, 0, 0.56),
           rgba(0, 0, 0, 0.56)
@@ -58,8 +47,6 @@
     }
   }
 }
-
-// form
 
 .search-form {
   position: relative;
@@ -71,7 +58,7 @@
   font-size: 14px;
   line-height: 1.14;
 
-  @media screen and (min-width: $tablet) {
+  @include _tablet {
     width: 336px;
   }
 
@@ -105,12 +92,12 @@
   right: 0;
   cursor: pointer;
 
-  @media screen and (min-width: $tablet) {
-    right: 185px;
+  @include _tablet {
+    right: 145px;
   }
 
-  @media screen and (min-width: $desktop) {
-    right: 440px;
+  @include _desktop {
+    right: 275px;
   }
 
   padding: 0;
@@ -121,19 +108,13 @@
   @include transition(color, stroke);
 
   .search-field ~ & {
-    stroke:  $white-color;
+    stroke: $white-color;
   }
 
   .search-field:focus ~ & {
     stroke: $accent-color;
   }
 }
-
-// .search-icon{
-//   stroke:  $white-color;
-// }
-
-// warning
 
 .header-warning {
   position: absolute;
@@ -143,16 +124,16 @@
   line-height: 1.14;
 
   @media screen and (max-width: ($tablet - 1)) {
-    max-width: ($mobile );
+    max-width: ($mobile);
   }
 
   @media screen and (min-width: $tablet) {
-    width: ($tablet - 78);
+    width: ($tablet - 153);
     text-align: center;
   }
 
   @media screen and (min-width: $desktop) {
-    width: ($desktop - 80);
+    width: ($desktop - 420);
     text-align: center;
   }
 
