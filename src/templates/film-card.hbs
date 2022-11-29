@@ -1,6 +1,16 @@
 {{#each this}}
-<li class="film__item">
-  <img src="" alt="" class="film-img">
-  {{!-- and so on... --}}
+<li class='cards__item card'>
+  <a href='#'>
+    <div class='card__img'>
+      <img src='{{ poster_path }}' alt='{{title}}' />
+    </div>
+    <div class='card__info'>
+      <h2 class='card__title'>{{ original_title}}</h2>
+      <ul class='card__genres'>{{genres}}
+      </ul>
+      <span class='card__year'>{{release_date}}</span>
+      <span class='card__rating'>{{vote_average}}</span>
+    </div>
+  </a>
 </li>
 {{/each}}
