@@ -1,24 +1,46 @@
-const homeListFilmCard = document.querySelector('.home__list');
 
-homeListFilmCard.addEventListener('click', ocClickOpenModal);
+const modalOpenEl = document.querySelector('[data-modal-open]');
+const modalCloseEl = document.querySelector('[data-modal-close]')
+const modalEl = document.querySelector("[data-modal]")
+const backdropEl = document.querySelector('.backdrop')
+  // слухач на батьківський UL карток
+modalOpenEl.addEventListener('click', onModalOpenClick);
 
-function ocClickOpenModal(event) {
+function onModalOpenClick(event) {
   event.preventDefault();
-
-  const closeBtn = document.querySelector('.modal-close-btn');
-  closeBtn.addEventListener('click', onClickCloseModal);
-
-  window.addEventListener('keydown', closeModalHandler);
-
-  function closeModalHandler(event) {
-    if (event.code === 'Escape') {
-      modal.close();
-      window.removeEventListener('keydown', closeModalHandler);
-    }
+  if (event.target.closest('li')) {
+   modalEl.classList.remove("is-hidden");
+   modalCloseEl.addEventListener('click', onModalCloseClick);
+   backdropEl.addEventListener('click', onBackdropElClick);
+   window.addEventListener('keydown', onEscBtnClick);
+  } else {
+    alert('Please click on film image');
   }
-
-  function onClickCloseModal(event) {
-    modal.close();
-    window.removeEventListener('keydown', closeModalHandler);
-  }
+  return
 }
+
+function onModalCloseClick() {
+  modalEl.classList.add("is-hidden");
+  modalCloseEl.removeEventListener("click", onModalCloseClick);
+  backdropEl.removeEventListener('click', onBackdropElClick);
+  window.removeEventListener('keydown', onEscBtnClick)
+  }
+
+ function onBackdropElClick(event) {
+   if (event.target === backdropEl) {
+     onModalCloseClick();
+  }
+ } 
+ function onEscBtnClick(event) {
+   if (event.code === 'Escape') {
+     onModalCloseClick();
+  }
+ }
+
+
+
+
+
+
+
+
