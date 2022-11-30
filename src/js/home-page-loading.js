@@ -81,7 +81,7 @@ function renderTrends(films) {
                 genres: genreStr,
                 release_date: film.release_date.slice(0, 4),
             }
-            return cardTemplate({ editedFilm });
+            return cardTemplate(editedFilm);
         })
         .join('');
     cards.innerHTML = markup;
