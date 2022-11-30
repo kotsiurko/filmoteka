@@ -28,7 +28,7 @@ async function onSearchFormSubmit(event) {
         //     return;
         // }
 
-        renderSearchQuery(data.results);
+        renderFilmCards(data.results);
     } catch (err) {
         console.log(err);
     }
@@ -41,7 +41,7 @@ async function onSearchFormSubmit(event) {
 async function onHomePageLoad() {
     try {
         const { data } = await movieDB.fetchData();
-        renderTrends(data.results);
+        renderFilmCards(data.results);
         console.log(data);
     } catch (err) {
         console.log(err);
@@ -49,7 +49,7 @@ async function onHomePageLoad() {
 }
 
 
-function renderTrends(films) {
+function renderFilmCards(films) {
     const markup = films
         .map(film => {
             // console.log(film);
@@ -85,42 +85,4 @@ function renderTrends(films) {
         });
     console.log(markup);
     cards.innerHTML = cardTemplate(markup);
-}
-
-function renderSearchQuery(films) {
-    const markup = films
-        .map(film => {
-            // console.log(film);
-
-            // Повертаю масив текстових жанрів до конкретного фільму
-            // console.log('film: ', film);
-            // const newGenres = film.genre_ids.map(id => {
-            //     return genres.genres.map(jsonID => {
-            //         if (jsonID.id === id) {
-            //             return jsonID.name
-            //         }
-            //     }).join('');
-            // });
-
-            // Формую стрічку із жанрами для відображення в картці
-            // let genreStr = '';
-
-            // if (newGenres.length >= 3) {
-            //     const strBegin = newGenres.slice(0, 2).join(', ');
-            //     genreStr = strBegin + ', Other';
-            // } else {
-            //     genreStr = newGenres.join(', ');
-            // }
-
-            // Формую підготовлений об'єкт даних для закидання в handlebar
-            // const editedFilm = {
-            //     ...film,
-            //     poster_path: `https://image.tmdb.org/t/p/w500${film.poster_path}`,
-            //     // genres: genreStr,
-            //     release_date: film.release_date.slice(0, 4),
-            // }
-            return cardTemplate({ film });
-        })
-        .join('');
-    cards.innerHTML = markup;
 }
