@@ -26,6 +26,40 @@
           </ul>
         </nav>
 
+        <!-- Switch theme -->
+        <div class="theme-switch">
+          <svg
+            class="theme-switch__icon icon-sun"
+            role="img"
+            aria-label="Sun icon"
+          >
+            <use href="./images/sprite.svg#icon-sun"></use>
+          </svg>
+
+          <div class="theme-switch__control">
+            <input
+              class="theme-switch__toggle"
+              type="checkbox"
+              name="theme"
+              id="theme-switch-toggle"
+              aria-label="Switcher between light and dark theme"
+            />
+            <label
+              aria-hidden="true"
+              class="theme-switch__track"
+              for="theme-switch-toggle"
+            >
+            </label>
+            <div aria-hidden="true" class="theme-switch__marker"></div>
+          </div>
+
+          <svg class="theme-switch__icon icon-moon" aria-label="Moon icon">
+            <use href="./images/sprite.svg#icon-moon"></use>
+          </svg>
+        </div>
+
+        <!-- Searh form -->
+
         <form class="search-form" id="search-form">
           <input
             type="text"

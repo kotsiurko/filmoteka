@@ -18,12 +18,12 @@
   @include transition(all);
   @include _tablet {
     right: 5%;
-    bottom: 5%;
+    bottom: 10%;
     border-radius: 50%;
   }
   @include _desktop {
     right: 10%;
-    bottom: 5%;
+    bottom: 10%;
   }
 }
 
