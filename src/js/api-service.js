@@ -22,26 +22,20 @@ import axios from 'axios';
 export class MovieDB {
     #BASE_URL = 'https://api.themoviedb.org/3';
     #API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
+    // #MovieId = '343611';
 
-    fetchData() {
+    fetchTrendMovies() {
         return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`);
     }
 
     fetchSearch() {
-        const searchParams = {
-            params: {
-                // key: this.#API_KEY,
-                // q: this.searchQuery,
-                // image_type: 'photo',
-                // orientation: 'horizontal',
-                // safesearch: 'true',
-                page: this.page,
-                // per_page: '40',
-            },
-        };
-
         // return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
-        return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}`, searchParams);
+        return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}`);
+    }
+
+    fetchMovieById(id) {
+        return axios.get(`${this.#BASE_URL}/movie/${id}?api_key=${this.#API_KEY}`);
+        // /movie/343611?api_key={api_key}
     }
 
 

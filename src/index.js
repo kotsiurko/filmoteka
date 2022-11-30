@@ -5,5 +5,4 @@ import './js/home-page-loading';
 import './js/preloader';
 import './js/theme-switch';
 import './js/to-top';
-import './js/to-top';
 // import './js/preloader';
