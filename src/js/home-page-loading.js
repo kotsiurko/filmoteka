@@ -1,6 +1,8 @@
 import { MovieDB } from './api-service';
 import cardTemplate from '../templates/film-card.hbs';
 import genres from './genres.json';
+import { renderWarningMsg } from './test-warning';
+// console.log(renderWarningMsg);
 
 const cards = document.querySelector('.cards');
 const searchFormEl = document.querySelector('#search-form');
@@ -11,43 +13,57 @@ onHomePageLoad();
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
 
+
 // let totalPages = null;
+
+// =============================================================================
+// виклик функції по вимальовуванні детальної інформації в модалці має вигляд:
+// getMovieDetails('774752');
+// =============================================================================
+async function getMovieDetails(id) {
+    try {
+        const { data } = await movieDB.fetchMovieById(id);
+        // =============================================
+        // Тут має бути відкриття модалки
+        // і передавання в неї даних із об'єкту data
+        // id витягуємо із дата-атрибуту li-елемента
+        // =============================================
+        console.log(data);
+    } catch (err) {
+        console.log(err);
+    }
+}
+// =============================================================================
+
 
 async function onSearchFormSubmit(event) {
     event.preventDefault();
 
     // movieDB.page = 1;
     movieDB.searchQuery = event.target.elements.query.value;
+    if (movieDB.searchQuery.length === 0) {
+        renderWarningMsg();
+        return;
+    }
 
     try {
         const { data } = await movieDB.fetchSearch();
         console.log(data.results);
-
-        // if (data.results === 0) {
-        //     console.log('Sorry, there are no images matching your search query. Please try again.');
-        //     return;
-        // }
-
         renderFilmCards(data.results);
     } catch (err) {
         console.log(err);
     }
 }
 
-
-
-
-
 async function onHomePageLoad() {
     try {
-        const { data } = await movieDB.fetchData();
+        const { data } = await movieDB.fetchTrendMovies();
         renderFilmCards(data.results);
         console.log(data);
     } catch (err) {
         console.log(err);
     }
 }
-
 
 function renderFilmCards(films) {
     const markup = films
@@ -83,6 +99,6 @@ function renderFilmCards(films) {
             }
             return editedFilm;
         });
-    console.log(markup);
+    // console.log(markup);
     cards.innerHTML = cardTemplate(markup);
 }

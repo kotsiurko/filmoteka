@@ -18,38 +18,31 @@ import axios from 'axios';
 // https://api.themoviedb.org/3/movie/436270/images?api_key=b04a034fc18f8d6bb9fee9f009f99d0d
 // - повертається масив об'єктів постерами різних розмірів та різними мовами
 
-
 export class MovieDB {
-    #BASE_URL = 'https://api.themoviedb.org/3';
-    #API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
+  #BASE_URL = 'https://api.themoviedb.org/3';
+  #API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
+  // #MovieId = '343611';
 
-    fetchData() {
-        return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`);
-    }
+  fetchTrendMovies() {
+    return axios.get(
+      `${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`
+    );
+  }
 
-    fetchSearch() {
-        const searchParams = {
-            params: {
-                // key: this.#API_KEY,
-                // q: this.searchQuery,
-                // image_type: 'photo',
-                // orientation: 'horizontal',
-                // safesearch: 'true',
-                page: this.page,
-                // per_page: '40',
-            },
-        };
+  fetchSearch() {
+    // return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
+    return axios.get(
+      `${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${
+        this.searchQuery
+      }`
+    );
+  }
 
-        // return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
-        return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}`, searchParams);
-    }
-
-
+  fetchMovieById(id) {
+    return axios.get(`${this.#BASE_URL}/movie/${id}?api_key=${this.#API_KEY}`);
+    // /movie/343611?api_key={api_key}
+  }
 }
-
-
-
-
 
 // Заготовка властивостей для картки
 // ІД - id
@@ -68,10 +61,6 @@ export class MovieDB {
 // Оригінальна назва - original_title
 // Жанри - повертається масив із id, тут треба буде написати функцію, яка повертає назви жанрів відповідно до їх id
 // Опис - overview
-
-
-
-
 
 // ЗРАЗОК ОБ'ЄКТУ, ЯКИЙ ПРИХОДИТЬ ЯК РЕЗУЛЬТАТ ПОШУКУ
 // adult: false
