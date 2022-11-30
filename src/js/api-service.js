@@ -2,19 +2,14 @@
 import axios from 'axios';
 
 // https://api.themoviedb.org/3/trending/movie/week/b04a034fc18f8d6bb9fee9f009f99d0d
-const API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
-const BASE_URL = 'https://api.themoviedb.org/3';
-const popular = BASE_URL + '/trending/movie/week' + '?api_key=' + API_KEY;
+// const API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
+// const BASE_URL = 'https://api.themoviedb.org/3';
+// const popular = BASE_URL + '/trending/movie/week' + '?api_key=' + API_KEY;
 // const imageURL = 'https://image.tmdb.org/t/p/w500' + relativeImageURL;
 // console.log(popular);
 
-// getMovies(popular);
-// function getMovies(url) {
-//     fetch(url).then(res => res.json()).then(data => showMovies(data.results));
-// }
-// function showMovies(data) {
-//     console.log(data[0]);
-// }
+// Зразок запиту на пошук фільмів без додаткових параметрів
+// https://api.themoviedb.org/3/search/collection?api_key=b04a034fc18f8d6bb9fee9f009f99d0d&query=<<searchQuery>>
 
 // Зразок запиту на картинку до конкретного фільму
 // https://image.tmdb.org/t/p/w500/bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg
@@ -28,16 +23,15 @@ export class MovieDB {
     #BASE_URL = 'https://api.themoviedb.org/3';
     #API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
 
-    constructor() {
-        this.page = null;
-        this.searchQuery = null;
+    fetchData() {
+        return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`);
     }
 
-    fetchData() {
+    fetchSearch() {
         const searchParams = {
             params: {
-                key: this.#API_KEY,
-                q: this.searchQuery,
+                // key: this.#API_KEY,
+                // q: this.searchQuery,
                 // image_type: 'photo',
                 // orientation: 'horizontal',
                 // safesearch: 'true',
@@ -46,9 +40,14 @@ export class MovieDB {
             },
         };
 
-        return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
+        // return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
+        return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}`, searchParams);
     }
+
+
 }
+
+
 
 
 
@@ -69,3 +68,17 @@ export class MovieDB {
 // Оригінальна назва - original_title
 // Жанри - повертається масив із id, тут треба буде написати функцію, яка повертає назви жанрів відповідно до їх id
 // Опис - overview
+
+
+
+
+
+// ЗРАЗОК ОБ'ЄКТУ, ЯКИЙ ПРИХОДИТЬ ЯК РЕЗУЛЬТАТ ПОШУКУ
+// adult: false
+// backdrop_path: "/c5RvuFVBu3oN1EysVlPI0VTx7kZ.jpg"
+// id: 916692
+// name: "Adam Collection"
+// original_language: "en"
+// original_name: "Adam Collection"
+// overview: "Adam is a collection of real-time-rendered short film created with the Unity engine.  The story follow an amnesiac robot."
+// poster_path: "/ldV5iWYUtMbwU1tHK0n9PuOKu1x.jpg"
