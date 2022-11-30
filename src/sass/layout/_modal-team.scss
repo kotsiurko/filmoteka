@@ -59,11 +59,15 @@
   background-color: #ffffff;
   border: none;
 }
-.team-members {
-  display: flex;
-  // gap: 30px;
-}
 
-.team-members__item {
-  width: calc((100% - 30px) / 2);
+.team {
+  display: flex;
+  flex-direction: column;
+}
+.team__members {
+  width: 100%;
+
+  @include _tablet {
+    width: calc((100% - 30px) / 2);
+  }
 }
