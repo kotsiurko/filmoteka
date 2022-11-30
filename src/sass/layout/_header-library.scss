@@ -51,7 +51,7 @@
 
 .storage {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   @include _tablet {
     justify-content: center;
@@ -69,11 +69,6 @@
   padding-top: 14px;
   padding-bottom: 12px;
   min-width: 130px;
-
-  @include _tablet {
-    min-width: 136px;
-  }
-
   text-align: center;
   font-family: Roboto;
   font-weight: 500;
@@ -90,6 +85,10 @@
     background-color: $accent-color;
     border: 1px solid $accent-color;
   }
+
+  @include _tablet {
+    min-width: 136px;
+  }
 }
 
 .storage__input:checked ~ .storage__btn {
@@ -99,12 +98,11 @@
 }
 
 .storage__input ~ .storage__btn {
-  background-color: $white-color;
-  border: 1px solid #000000;
-  color: #000000;
+  background-color: transparent;
+  border: 1px solid $white-color;
+  color: $white-color;
 }
 
 .side-nav--lib {
   margin-bottom: 51px;
 }
-

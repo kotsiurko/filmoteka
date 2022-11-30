@@ -1,7 +1,7 @@
 .theme-switch {
   display: flex;
   align-items: center;
-  padding-left: 206px;
+  justify-content: end;
   margin-bottom: 32px;
   @include _tablet {
     padding-left: 545px;

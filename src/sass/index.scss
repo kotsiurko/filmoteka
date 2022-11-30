@@ -2,6 +2,7 @@
 @import './utils/mixins';
 @import './utils/variables';
 @import './layout/layout';
+@import './layout/preloader';
 @import './container';
 @import './layout/header-home';
 @import './layout/header-library';
@@ -14,5 +15,4 @@
 @import './layout/buttons';
 @import './layout/header-common';
 @import './layout/to-top';
-@import './layout/preloader';
 @import './layout/theme-switch';
