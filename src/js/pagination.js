@@ -3,6 +3,21 @@ import { MovieDB } from './api-service';
 import { renderHTML } from './home-page-loading';
 
 const movie = new MovieDB();
+console.log(movie);
+let globalCurrentPage = 1;
+
+async function fetch() {
+  const fetchResult = await movie.fetchTrendMovies(movie.page);
+  let fetchCurrentPage = fetchResult.data.page;
+  let fetchTotalPages = fetchResult.data.total_pages;
+  console.log(fetchCurrentPage);
+  console.log(fetchTotalPages);
+  pagination(fetchCurrentPage, fetchTotalPages);
+  const ourPages = { fetchCurrentPage, fetchTotalPages };
+  return ourPages;
+}
+
+fetch();
 
 function pagination(currentPage, allPages) {
   let markup = '';
@@ -10,7 +25,7 @@ function pagination(currentPage, allPages) {
   let beforePage = currentPage - 1;
   let afterPage = currentPage + 1;
   let afterTwoPage = currentPage + 2;
-  movie.page = currentPage;
+  globalCurrentPage = currentPage;
 
   if (currentPage > 1) {
     markup += `<li class="pagination__item slider-arrow prev">&#129144</li>`;
@@ -49,7 +64,9 @@ paginationBox.addEventListener('click', onPaginationClick);
 
 pagination();
 
-function onPaginationClick(event) {
+async function onPaginationClick(event) {
+  // let data = await fetch();
+  // console.log(data);
   if (event.target.nodeName !== 'LI') {
     return;
   }
@@ -57,22 +74,35 @@ function onPaginationClick(event) {
     return;
   }
   if (event.target.textContent === '🡸') {
-    movie.fetchData((movie.page -= 1)).then(data => {
+    fetch((globalCurrentPage -= 1)).then(data => {
       // renderHTML(data.results);
-      pagination(data.page, data.total_pages);
+      pagination(data.fetchCurrentPage, data.fetchTotalPages);
     });
     return;
   }
+  // if (event.target.textContent === '🡺') {
+  //   fetch((globalCurrentPage += 1)).then(data => {
+  //     // renderHTML(data.results);
+  //     console.log(globalCurrentPage);
+  //     pagination(data.fetchCurrentPage, data.fetchTotalPages);
+  //   });
+  //   return;
+  // }
+
   if (event.target.textContent === '🡺') {
-    movie.fetchData((movie.page += 1)).then(data => {
+    fetch().then(data => {
+      data.fetchCurrentPage += 1;
+
       // renderHTML(data.results);
-      pagination(data.page, data.total_pages);
+      console.log(data);
+      pagination(data.fetchCurrentPage, data.fetchTotalPages);
     });
     return;
   }
+
   const page = event.target.textContent;
-  movie.fetchData(movie.page).then(data => {
+  fetch(globalCurrentPage).then(data => {
     // renderHTML(data.results);
-    pagination(data.page, data.total_pages);
+    pagination(data.fetchCurrentPage, data.fetchTotalPages);
   });
 }
