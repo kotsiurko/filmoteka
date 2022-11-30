@@ -1,32 +1,78 @@
-import Pagination from 'tui-pagination';
-import 'tui-pagination/dist/tui-pagination.min.css';
+import { all } from 'axios';
+import { MovieDB } from './api-service';
+import { renderHTML } from './home-page-loading';
 
-const container = document.getElementById('tui-pagination-container');
+const movie = new MovieDB();
 
-const options = {
-  itemsPerPage: 20,
-  visiblePages: 10,
-  page: 1,
-  centerAlign: false,
-  firstItemClassName: 'tui-first-child',
-  lastItemClassName: 'tui-last-child',
-  template: {
-    page: '<a href="#" class="tui-page-btn">{{page}}</a>',
-    currentPage:
-      '<strong class="tui-page-btn tui-is-selected class">{{page}}</strong>',
-    moveButton:
-      '<a href="#" class="tui-page-btn tui-{{type}}">' +
-      '<span class="tui-ico-{{type}}">{{type}}</span>' +
-      '</a>',
-    disabledMoveButton:
-      '<span class="tui-page-btn tui-is-disabled tui-{{type}}">' +
-      '<span class="tui-ico-{{type}}">{{type}}</span>' +
-      '</span>',
-    moreButton:
-      '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip">' +
-      '<span class="tui-ico-ellip">...</span>' +
-      '</a>',
-  },
-};
-const instance = new Pagination(container, options);
-instance.getCurrentPage();
+function pagination(currentPage, allPages) {
+  let markup = '';
+  let beforeTwoPage = currentPage - 2;
+  let beforePage = currentPage - 1;
+  let afterPage = currentPage + 1;
+  let afterTwoPage = currentPage + 2;
+  movie.page = currentPage;
+
+  if (currentPage > 1) {
+    markup += `<li class="pagination__item slider-arrow prev">&#129144</li>`;
+    markup += `<li class="pagination__item">1</li>`;
+  }
+  if (currentPage > 4) {
+    markup += `<li class="pagination__item dots">...</li>`;
+  }
+  if (currentPage > 3) {
+    markup += `<li class="pagination__item">${beforeTwoPage}</li>`;
+  }
+  if (currentPage > 2) {
+    markup += `<li class="pagination__item">${beforePage}</li>`;
+  }
+  markup += `<li class="pagination__item pagination__item--current">${currentPage}</li>`;
+
+  if (allPages - 1 > currentPage) {
+    markup += `<li class="pagination__item">${afterPage}</li>`;
+  }
+  if (allPages - 2 > currentPage) {
+    markup += `<li class="pagination__item">${afterTwoPage}</li>`;
+  }
+  if (allPages - 3 > currentPage) {
+    markup += `<li class="pagination__item dots">...</li>`;
+  }
+  if (allPages > currentPage) {
+    markup += `<li class="pagination__item">${allPages}</li>`;
+    markup += `<li class="pagination__item slider-arrow next">&#129146</li>`;
+  }
+  paginationBox.innerHTML = markup;
+}
+
+const paginationBox = document.querySelector('.pagination__list');
+
+paginationBox.addEventListener('click', onPaginationClick);
+
+pagination();
+
+function onPaginationClick(event) {
+  if (event.target.nodeName !== 'LI') {
+    return;
+  }
+  if (event.target.textContent === '...') {
+    return;
+  }
+  if (event.target.textContent === '🡸') {
+    movie.fetchData((movie.page -= 1)).then(data => {
+      // renderHTML(data.results);
+      pagination(data.page, data.total_pages);
+    });
+    return;
+  }
+  if (event.target.textContent === '🡺') {
+    movie.fetchData((movie.page += 1)).then(data => {
+      // renderHTML(data.results);
+      pagination(data.page, data.total_pages);
+    });
+    return;
+  }
+  const page = event.target.textContent;
+  movie.fetchData(movie.page).then(data => {
+    // renderHTML(data.results);
+    pagination(data.page, data.total_pages);
+  });
+}
