@@ -119,27 +119,20 @@ body.dark-theme {
     color: $white-color;
   }
 
-  & .tui-pagination .tui-page-btn {
+  & .pagination__item {
     color: $white-color;
   }
 
-  & .tui-ico-ellip {
-    fill: $white-color;
+  & .pagination__item {
+    background: transparent;
   }
 
-  & .tui-pagination .tui-ico-first,
-  .tui-pagination .tui-ico-last {
-    fill: $white-color;
+  & .slider-arrow {
+    color: $white-color;
   }
 
-  & .tui-pagination .hide-first,
-  .tui-pagination .hide-last {
-    background: rgba(247, 247, 247, 0.1);
-  }
-
-  & .tui-pagination .hide-first:hover,
-  & .tui-pagination .hide-last:hover {
-    background: $accent-color;
+  & .pagination__item--current {
+    background-color: $accent-color;
   }
 
   //   & .header-bg,

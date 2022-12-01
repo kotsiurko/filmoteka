@@ -1,46 +1,137 @@
+import { MovieDB } from './api-service';
+import { getMovieDetails } from './home-page-loading';
+console.dir(getMovieDetails);
 
 const modalOpenEl = document.querySelector('[data-modal-open]');
-const modalCloseEl = document.querySelector('[data-modal-close]')
-const modalEl = document.querySelector("[data-modal]")
-const backdropEl = document.querySelector('.backdrop')
-  // слухач на батьківський UL карток
+const modalCloseEl = document.querySelector('[data-modal-close]');
+const modalEl = document.querySelector('[data-modal]');
+const backdropEl = document.querySelector('.backdrop');
+const modalContainerEl = document.querySelector('.tablet-container');
+// слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
+const movieDB = new MovieDB();
 
-function onModalOpenClick(event) {
+async function onModalOpenClick(event) {
   event.preventDefault();
   if (event.target.closest('li')) {
-   modalEl.classList.remove("is-hidden");
-   modalCloseEl.addEventListener('click', onModalCloseClick);
-   backdropEl.addEventListener('click', onBackdropElClick);
-   window.addEventListener('keydown', onEscBtnClick);
+    console.log('Тицаю на ЛІ');
+    modalEl.classList.remove('is-hidden');
+    modalCloseEl.addEventListener('click', onModalCloseClick);
+    backdropEl.addEventListener('click', onBackdropElClick);
+    window.addEventListener('keydown', onEscBtnClick);
+
+    const selectedMovie = event.target.closest('li');
+    console.log(selectedMovie);
+
+    const FilmID = selectedMovie.dataset.movieid;
+    console.log(FilmID);
+
+    try {
+      const { data } = await movieDB.fetchMovieById(FilmID);
+      console.log(data);
+      renderFilmCard(data);
+    } catch (err) {
+      console.log(err);
+    }
   } else {
     alert('Please click on film image');
   }
-  return
+  return;
 }
 
 function onModalCloseClick() {
-  modalEl.classList.add("is-hidden");
-  modalCloseEl.removeEventListener("click", onModalCloseClick);
+  modalEl.classList.add('is-hidden');
+  modalCloseEl.removeEventListener('click', onModalCloseClick);
   backdropEl.removeEventListener('click', onBackdropElClick);
-  window.removeEventListener('keydown', onEscBtnClick)
+  window.removeEventListener('keydown', onEscBtnClick);
+}
+
+function onBackdropElClick(event) {
+  if (event.target === backdropEl) {
+    onModalCloseClick();
   }
-
- function onBackdropElClick(event) {
-   if (event.target === backdropEl) {
-     onModalCloseClick();
+}
+function onEscBtnClick(event) {
+  if (event.code === 'Escape') {
+    onModalCloseClick();
   }
- } 
- function onEscBtnClick(event) {
-   if (event.code === 'Escape') {
-     onModalCloseClick();
-  }
- }
+}
 
+function renderFilmCard({
+  poster_path,
+  title,
+  vote_average,
+  vote_count,
+  popularity,
+  original_title,
+  overview,
+}) {
+  const markup = `
+      <img src="https://image.tmdb.org/t/p/w500${poster_path}" class="modal-image" alt="${title}" />
+           <div class="description-container">
+        <h2 class="film-heading">${title}</h2>
+        <ul class="film-info__list">
+          <li class="film-info__item">
+            <p class="film-info__item--el">Vote / Votes</p>
+            <span class="film-info__vote">${vote_average}</span>
+            <span> &nbsp;/&nbsp;</span>
+            <span class="film-info__params">${vote_count}</span>
+          </li>
+          <li class="film-info__item">
+            <p class="film-info__item--el">Popularity</p>
+            <span class="film-info__params">${popularity}</span>
+          </li>
+          <li class="film-info__item">
+            <p class="film-info__item--el">Original Title</p>
+            <span class="film-info__params">${original_title}</span>
+          </li>
+          <li class="film-info__item">
+            <p class="film-info__item--el">Genre</p>
+            <span class="film-info__params">Western</span>
+          </li>
+        </ul>
+        <h3 class="film-info__about">About</h3>
+        <p class="film-info__description">
+          ${overview}
+        </p>
+        <div class="btn-container">
+          <button class="button button__orange">add to Watched</button>
+          <button class="button button__transparent">add to queue</button>
+        </div>
+      </div>
+    
+`;
+  modalContainerEl.innerHTML = markup;
+}
 
+// function onModalOpenClick(event) {
+//   event.preventDefault();
+//   if (event.target.closest('li')) {
 
+//     modalEl.classList.remove('is-hidden');
+//     modalCloseEl.addEventListener('click', onModalCloseClick);
+//     backdropEl.addEventListener('click', onBackdropElClick);
+//     window.addEventListener('keydown', onEscBtnClick);
+//   } else {
+//     alert('Please click on film image');
+//   }
+//   return;
+// }
 
+// function onModalCloseClick() {
+//   modalEl.classList.add('is-hidden');
+//   modalCloseEl.removeEventListener('click', onModalCloseClick);
+//   backdropEl.removeEventListener('click', onBackdropElClick);
+//   window.removeEventListener('keydown', onEscBtnClick);
+// }
 
-
-
-
+// function onBackdropElClick(event) {
+//   if (event.target === backdropEl) {
+//     onModalCloseClick();
+//   }
+// }
+// function onEscBtnClick(event) {
+//   if (event.code === 'Escape') {
+//     onModalCloseClick();
+//   }
+// }
