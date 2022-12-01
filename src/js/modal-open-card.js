@@ -90,7 +90,7 @@ function renderFilmCard(data) {
     overview,
   } = data;
 
-  filmGenres = prepareObject(data.genres);
+  let filmGenres = prepareObject(data.genres);
 
 
   const markup = `
