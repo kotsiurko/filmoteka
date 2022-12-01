@@ -2,7 +2,7 @@ import { MovieDB } from './api-service';
 import cardTemplate from '../templates/film-card.hbs';
 import genres from './genres.json';
 import { renderWarningMsg } from './test-warning';
-// console.log(renderWarningMsg);
+import { loaderRender } from './preloader';
 
 const cards = document.querySelector('.cards');
 const searchFormEl = document.querySelector('#search-form');
@@ -55,21 +55,22 @@ async function onSearchFormSubmit(event) {
 }
 
 async function onHomePageLoad() {
+  loaderRender();
   try {
-    const { data } = await movieDB.fetchTrendMovies();
+    const { data } = await movieDB.fetchTrendMovies(1);
+    if (data) {
+      loaderRender();
+    }
     renderFilmCards(data.results);
-    // console.log(data);
   } catch (err) {
     console.log(err);
   }
 }
 
-function renderFilmCards(films) {
+export function renderFilmCards(films) {
   const markup = films.map(film => {
-    // console.log(film);
 
     // Повертаю масив текстових жанрів до конкретного фільму
-    // console.log('film: ', film);
     const newGenres = film.genre_ids.map(id => {
       return genres.genres
         .map(jsonID => {
@@ -99,6 +100,5 @@ function renderFilmCards(films) {
     };
     return editedFilm;
   });
-  // console.log(markup);
   cards.innerHTML = cardTemplate(markup);
 }

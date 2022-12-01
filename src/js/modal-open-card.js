@@ -1,6 +1,5 @@
 import { MovieDB } from './api-service';
-import { getMovieDetails } from './home-page-loading';
-console.dir(getMovieDetails);
+// import { getMovieDetails } from './home-page-loading';
 
 const modalOpenEl = document.querySelector('[data-modal-open]');
 const modalCloseEl = document.querySelector('[data-modal-close]');

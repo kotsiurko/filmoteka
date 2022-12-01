@@ -18,24 +18,23 @@ import axios from 'axios';
 // https://api.themoviedb.org/3/movie/436270/images?api_key=b04a034fc18f8d6bb9fee9f009f99d0d
 // - повертається масив об'єктів постерами різних розмірів та різними мовами
 
+// Щоб зробити запит за певною сторінкою достаттньо дописати в запиті
+// &page=${page}
+
 export class MovieDB {
   #BASE_URL = 'https://api.themoviedb.org/3';
   #API_KEY = 'b04a034fc18f8d6bb9fee9f009f99d0d';
   // #MovieId = '343611';
 
-  fetchTrendMovies() {
+  fetchTrendMovies(page) {
     return axios.get(
-      `${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`
+      `${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}&page=${page}`
     );
   }
 
   fetchSearch() {
     // return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
-    return axios.get(
-      `${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${
-        this.searchQuery
-      }`
-    );
+    return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}`);
   }
 
   fetchMovieById(id) {
