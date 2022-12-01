@@ -1,6 +1,40 @@
-// .tui-page-btn.tui-is-selected.class {
-//   background-color: $footer-bg-color;
-//   width: 40px;
-//   height: 40px;
-//   border: none;
-// }
+.pagination__container {
+  padding: 40px 0;
+  @include _desktop {
+    padding: 60px 0;
+  }
+}
+
+.pagination__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  color: $page-color;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.33;
+}
+
+.pagination__item--current {
+  border-radius: 5px;
+  background-color: $accent-color;
+  color: $white-color;
+}
+
+.slider-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: $footer-bg-color;
+}
