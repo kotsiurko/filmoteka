@@ -34,9 +34,9 @@ async function onModalOpenClick(event) {
       addToQueueBtnEl.addEventListener("click", onaddToQueueElClick = () => {
         localStrgWriteAddToQueue(data);
       });
-      // function onWatchedBtnElClick() {
-      //   localStorageWrite(data)
-      // }
+      function onWatchedBtnElClick() {
+        localStorageWrite(data)
+      }
     } catch (err) {
       console.log(err);
     }
