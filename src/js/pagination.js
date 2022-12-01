@@ -1,20 +1,17 @@
-import { all } from 'axios';
+// import { all } from 'axios';
 import { MovieDB } from './api-service';
-import { renderHTML } from './home-page-loading';
+import { renderFilmCards } from './home-page-loading';
 
 const movie = new MovieDB();
-console.log(movie);
 let globalCurrentPage = 1;
 
 async function fetch() {
-  const fetchResult = await movie.fetchTrendMovies(movie.page);
+  const fetchResult = await movie.fetchTrendMovies(globalCurrentPage);
   let fetchCurrentPage = fetchResult.data.page;
   let fetchTotalPages = fetchResult.data.total_pages;
-  console.log(fetchCurrentPage);
-  console.log(fetchTotalPages);
   pagination(fetchCurrentPage, fetchTotalPages);
-  const ourPages = { fetchCurrentPage, fetchTotalPages };
-  return ourPages;
+  // const ourPages = { fetchCurrentPage, fetchTotalPages };
+  return fetchResult.data;
 }
 
 fetch();
@@ -65,8 +62,6 @@ paginationBox.addEventListener('click', onPaginationClick);
 pagination();
 
 async function onPaginationClick(event) {
-  // let data = await fetch();
-  // console.log(data);
   if (event.target.nodeName !== 'LI') {
     return;
   }
@@ -75,34 +70,25 @@ async function onPaginationClick(event) {
   }
   if (event.target.textContent === '🡸') {
     fetch((globalCurrentPage -= 1)).then(data => {
-      // renderHTML(data.results);
-      pagination(data.fetchCurrentPage, data.fetchTotalPages);
+      renderFilmCards(data.results);
+      pagination(data.page, data.total_pages);
     });
     return;
   }
-  // if (event.target.textContent === '🡺') {
-  //   fetch((globalCurrentPage += 1)).then(data => {
-  //     // renderHTML(data.results);
-  //     console.log(globalCurrentPage);
-  //     pagination(data.fetchCurrentPage, data.fetchTotalPages);
-  //   });
-  //   return;
-  // }
-
   if (event.target.textContent === '🡺') {
-    fetch().then(data => {
-      data.fetchCurrentPage += 1;
-
-      // renderHTML(data.results);
-      console.log(data);
-      pagination(data.fetchCurrentPage, data.fetchTotalPages);
+    fetch((globalCurrentPage += 1)).then(data => {
+      renderFilmCards(data.results);
+      pagination(data.page, data.total_pages);
     });
     return;
   }
 
-  const page = event.target.textContent;
+  const page = Number(event.target.textContent);
+  console.log(typeof page, page);
+  globalCurrentPage = page;
   fetch(globalCurrentPage).then(data => {
-    // renderHTML(data.results);
-    pagination(data.fetchCurrentPage, data.fetchTotalPages);
+    console.log(data);
+    renderFilmCards(data.results);
+    pagination(data.page, data.total_pages);
   });
 }
