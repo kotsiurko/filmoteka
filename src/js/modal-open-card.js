@@ -7,6 +7,8 @@ const modalCloseEl = document.querySelector('[data-modal-close]');
 const modalEl = document.querySelector('[data-modal]');
 const backdropEl = document.querySelector('.backdrop');
 const modalContainerEl = document.querySelector('.tablet-container');
+
+
 // слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
 const movieDB = new MovieDB();
@@ -30,6 +32,19 @@ async function onModalOpenClick(event) {
       const { data } = await movieDB.fetchMovieById(FilmID);
       console.log(data);
       renderFilmCard(data);
+      
+      const watchedBtnEl = document.querySelector(".watched");
+      watchedBtnEl.addEventListener("click", onWatchedBtnElClick = () => {
+        localStrgWriteWatched(data);
+      });
+      const addToQueueBtnEl = document.querySelector(".queue");
+      console.log(addToQueueBtnEl);
+      addToQueueBtnEl.addEventListener("click", onaddToQueueElClick = () => {
+        localStrgWriteAddToQueue(data);
+      });
+      // function onWatchedBtnElClick() {
+      //   localStorageWrite(data)
+      // }
     } catch (err) {
       console.log(err);
     }
@@ -95,14 +110,65 @@ function renderFilmCard({
           ${overview}
         </p>
         <div class="btn-container">
-          <button class="button button__orange">add to Watched</button>
-          <button class="button button__transparent">add to queue</button>
-        </div>
+        <button class="button button__orange watched">add to Watched</button>
+        <button class="button button__transparent queue">add to queue</button>
       </div>
-    
-`;
+        </div>`;
+  
   modalContainerEl.innerHTML = markup;
 }
+
+const WATCHED_STORAGE_KEY = "watched films";
+const QUEUE_STORAGE_KEY = "films in queue"
+
+function localStrgWriteWatched(data) {
+  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || []
+  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview} = data;
+  const filmData = {
+    title: title,
+    poster_path: poster_path,
+    vote_average: vote_average,
+    vote_count: vote_count,
+    popularity: popularity,
+    original_title: original_title,
+    overview: overview,
+  };
+  watchedFilms.push(filmData);
+  const stringifyData = JSON.stringify(watchedFilms);
+  localStorage.setItem(WATCHED_STORAGE_KEY, stringifyData);
+}
+function localStrgWriteAddToQueue(data) {
+  const watchedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || []
+  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview} = data;
+  const filmData = {
+    title: title,
+    poster_path: poster_path,
+    vote_average: vote_average,
+    vote_count: vote_count,
+    popularity: popularity,
+    original_title: original_title,
+    overview: overview,
+  };
+  watchedFilms.push(filmData);
+  const stringifyData = JSON.stringify(watchedFilms);
+  localStorage.setItem(QUEUE_STORAGE_KEY, stringifyData);
+}  
+
+
+
+
+ function localStorageRemove(data) {
+  localStorage.removeItem(data)
+ }
+
+
+
+
+
+
+
+
+
 
 // function onModalOpenClick(event) {
 //   event.preventDefault();

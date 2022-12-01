@@ -25,7 +25,7 @@
   transform: translate(-50%, -50%) scale(1);
   width: 280px;
   // height: 940px;
-  background-color: #cebcbc;
+  background-color: #3f3dd6;
   // background-image: repeating-linear-gradient(
   //   to bottom right,
   //   rgb(14, 14, 15),
@@ -61,7 +61,7 @@
     padding-right: 80px;
   }
 }
-.modal-button {
+.modal-button-team {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -94,7 +94,8 @@
   width: 100%;
   border: 1px solid #000;
   border-radius: 15px;
-  background-color: rgb(231, 156, 71);
+  background-color: rgb(147, 101, 219);
+  box-shadow: 6px 5px 8px rgb(29, 27, 27);
   @include _tablet {
     width: calc((100% - 40px) / 2);
   }
@@ -102,10 +103,12 @@
     width: calc((100% - 40px) / 2);
   }
 }
+.team__members:hover {
+  box-shadow: 10px 10px 5px lightblue;
+}
 .team__photo {
   width: 100%;
   border-radius: 15px;
-  text-shadow: 3px 5px 6px #6c9;
 
   @include _tablet {
     margin-bottom: 12px;
