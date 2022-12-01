@@ -30,7 +30,7 @@ async function onModalOpenClick(event) {
         localStrgWriteWatched(data);
       });
       const addToQueueBtnEl = document.querySelector(".queue");
-      // console.log(addToQueueBtnEl);
+      console.log(addToQueueBtnEl);
       addToQueueBtnEl.addEventListener("click", onaddToQueueElClick = () => {
         localStrgWriteAddToQueue(data);
       });
@@ -61,15 +61,38 @@ function onEscBtnClick(event) {
     onModalCloseClick();
   }
 }
-function renderFilmCard({
-  poster_path,
-  title,
-  vote_average,
-  vote_count,
-  popularity,
-  original_title,
-  overview,
-}) {
+
+// data.genres
+function prepareObject(array) {
+  let newArr = array.map(el => el.name);
+
+  let filmGenres = '';
+
+  if (newArr.length < 4) {
+    filmGenres = newArr.join(', ');
+  }
+
+  if (newArr.length >= 4) {
+    filmGenres = newArr.slice(0, 2).join(', ') + ", Others";
+  }
+  return filmGenres;
+}
+
+
+function renderFilmCard(data) {
+  const {
+    poster_path,
+    title,
+    vote_average,
+    vote_count,
+    popularity,
+    original_title,
+    overview,
+  } = data;
+
+  filmGenres = prepareObject(data.genres);
+
+
   const markup = `
       <img src="https://image.tmdb.org/t/p/w500${poster_path}" class="modal-image" alt="${title}" />
            <div class="description-container">
@@ -91,7 +114,7 @@ function renderFilmCard({
           </li>
           <li class="film-info__item">
             <p class="film-info__item--el">Genre</p>
-            <span class="film-info__params">Western</span>
+            <span class="film-info__params">${filmGenres}</span>
           </li>
         </ul>
         <h3 class="film-info__about">About</h3>
@@ -108,7 +131,11 @@ function renderFilmCard({
 const WATCHED_STORAGE_KEY = "watched films";
 const QUEUE_STORAGE_KEY = "films in queue"
 function localStrgWriteWatched(data) {
-  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || []
+  console.log(data);
+
+  filmGenres = prepareObject(data.genres);
+
+  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
   const { poster_path, title, vote_average, vote_count, popularity, original_title, overview } = data;
   const filmData = {
     title: title,
@@ -118,12 +145,15 @@ function localStrgWriteWatched(data) {
     popularity: popularity,
     original_title: original_title,
     overview: overview,
+    filmGenres: filmGenres,
   };
   watchedFilms.push(filmData);
   const stringifyData = JSON.stringify(watchedFilms);
   localStorage.setItem(WATCHED_STORAGE_KEY, stringifyData);
 }
+
 function localStrgWriteAddToQueue(data) {
+  filmGenres = prepareObject(data.genres);
   const watchedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || []
   const { poster_path, title, vote_average, vote_count, popularity, original_title, overview } = data;
   const filmData = {
@@ -134,39 +164,15 @@ function localStrgWriteAddToQueue(data) {
     popularity: popularity,
     original_title: original_title,
     overview: overview,
+    filmGenres: filmGenres,
   };
+
   watchedFilms.push(filmData);
   const stringifyData = JSON.stringify(watchedFilms);
   localStorage.setItem(QUEUE_STORAGE_KEY, stringifyData);
 }
+
+
 function localStorageRemove(data) {
   localStorage.removeItem(data)
 }
-// function onModalOpenClick(event) {
-//   event.preventDefault();
-//   if (event.target.closest('li')) {
-//     modalEl.classList.remove('is-hidden');
-//     modalCloseEl.addEventListener('click', onModalCloseClick);
-//     backdropEl.addEventListener('click', onBackdropElClick);
-//     window.addEventListener('keydown', onEscBtnClick);
-//   } else {
-//     alert('Please click on film image');
-//   }
-//   return;
-// }
-// function onModalCloseClick() {
-//   modalEl.classList.add('is-hidden');
-//   modalCloseEl.removeEventListener('click', onModalCloseClick);
-//   backdropEl.removeEventListener('click', onBackdropElClick);
-//   window.removeEventListener('keydown', onEscBtnClick);
-// }
-// function onBackdropElClick(event) {
-//   if (event.target === backdropEl) {
-//     onModalCloseClick();
-//   }
-// }
-// function onEscBtnClick(event) {
-//   if (event.code === 'Escape') {
-//     onModalCloseClick();
-//   }
-// }

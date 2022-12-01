@@ -55,7 +55,7 @@ async function onSearchFormSubmit(event) {
 }
 
 async function onHomePageLoad() {
-  loaderRender();
+  // loaderRender();
   try {
     const { data } = await movieDB.fetchTrendMovies(1);
     if (data) {
