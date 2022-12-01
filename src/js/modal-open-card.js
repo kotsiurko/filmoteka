@@ -1,7 +1,6 @@
 import { MovieDB } from './api-service';
 import { getMovieDetails } from './home-page-loading';
-console.dir(getMovieDetails);
-
+// console.dir(getMovieDetails);
 const modalOpenEl = document.querySelector('[data-modal-open]');
 const modalCloseEl = document.querySelector('[data-modal-close]');
 const modalEl = document.querySelector('[data-modal]');
@@ -12,27 +11,22 @@ const modalContainerEl = document.querySelector('.tablet-container');
 // слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
 const movieDB = new MovieDB();
-
 async function onModalOpenClick(event) {
   event.preventDefault();
   if (event.target.closest('li')) {
-    console.log('Тицаю на ЛІ');
+    // console.log('Тицаю на ЛІ');
     modalEl.classList.remove('is-hidden');
     modalCloseEl.addEventListener('click', onModalCloseClick);
     backdropEl.addEventListener('click', onBackdropElClick);
     window.addEventListener('keydown', onEscBtnClick);
-
     const selectedMovie = event.target.closest('li');
-    console.log(selectedMovie);
-
+    // console.log(selectedMovie);
     const FilmID = selectedMovie.dataset.movieid;
-    console.log(FilmID);
-
+    // console.log(FilmID);
     try {
       const { data } = await movieDB.fetchMovieById(FilmID);
-      console.log(data);
+      // console.log(data);
       renderFilmCard(data);
-      
       const watchedBtnEl = document.querySelector(".watched");
       watchedBtnEl.addEventListener("click", onWatchedBtnElClick = () => {
         localStrgWriteWatched(data);
@@ -53,14 +47,12 @@ async function onModalOpenClick(event) {
   }
   return;
 }
-
 function onModalCloseClick() {
   modalEl.classList.add('is-hidden');
   modalCloseEl.removeEventListener('click', onModalCloseClick);
   backdropEl.removeEventListener('click', onBackdropElClick);
   window.removeEventListener('keydown', onEscBtnClick);
 }
-
 function onBackdropElClick(event) {
   if (event.target === backdropEl) {
     onModalCloseClick();
@@ -71,7 +63,6 @@ function onEscBtnClick(event) {
     onModalCloseClick();
   }
 }
-
 function renderFilmCard({
   poster_path,
   title,
@@ -173,7 +164,6 @@ function localStrgWriteAddToQueue(data) {
 // function onModalOpenClick(event) {
 //   event.preventDefault();
 //   if (event.target.closest('li')) {
-
 //     modalEl.classList.remove('is-hidden');
 //     modalCloseEl.addEventListener('click', onModalCloseClick);
 //     backdropEl.addEventListener('click', onBackdropElClick);
@@ -183,14 +173,12 @@ function localStrgWriteAddToQueue(data) {
 //   }
 //   return;
 // }
-
 // function onModalCloseClick() {
 //   modalEl.classList.add('is-hidden');
 //   modalCloseEl.removeEventListener('click', onModalCloseClick);
 //   backdropEl.removeEventListener('click', onBackdropElClick);
 //   window.removeEventListener('keydown', onEscBtnClick);
 // }
-
 // function onBackdropElClick(event) {
 //   if (event.target === backdropEl) {
 //     onModalCloseClick();

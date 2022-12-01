@@ -7,4 +7,3 @@ import './js/modal-open-card'
 import './js/team-modal'
 import './js/theme-switch';
 import './js/to-top';
-// import './js/preloader';
