@@ -3,6 +3,7 @@ import cardTemplate from '../templates/film-card.hbs';
 import genres from './genres.json';
 import { renderWarningMsg } from './test-warning';
 import { loaderRender } from './preloader';
+import { numberConverter } from './prepare-number';
 
 const cards = document.querySelector('.cards');
 const searchFormEl = document.querySelector('#search-form');
@@ -11,29 +12,6 @@ const movieDB = new MovieDB();
 
 onHomePageLoad();
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
-
-// let totalPages = null;
-
-// =============================================================================
-// виклик функції по вимальовуванні детальної інформації в модалці має вигляд:
-// getMovieDetails('774752');
-// =============================================================================
-export async function getMovieDetails(id) {
-  try {
-    const { data } = await movieDB.fetchMovieById(id);
-    // =============================================
-    // Тут має бути відкриття модалки
-    // і передавання в неї даних із об'єкту data
-    // id витягуємо із дата-атрибуту li-елемента
-    // =============================================
-    // console.log(data);
-    return data;
-  } catch (err) {
-    console.log(err);
-  }
-}
-getMovieDetails('774752');
-// =============================================================================
 
 async function onSearchFormSubmit(event) {
   event.preventDefault();
@@ -55,7 +33,6 @@ async function onSearchFormSubmit(event) {
 }
 
 async function onHomePageLoad() {
-  loaderRender();
   try {
     const { data } = await movieDB.fetchTrendMovies(1);
     if (data) {
@@ -90,12 +67,17 @@ export function renderFilmCards(films) {
     } else {
       genreStr = newGenres.join(', ');
     }
+
+    const rating = numberConverter(film.vote_average);
+    // console.log(rating);
+
     // Формую підготовлений об'єкт даних для закидання в handlebar
     const editedFilm = {
       ...film,
       poster_path: `https://image.tmdb.org/t/p/w500${film.poster_path}`,
       genres: genreStr,
       release_date: film.release_date.slice(0, 4),
+      vote_average: rating,
     };
     return editedFilm;
   });
