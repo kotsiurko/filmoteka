@@ -1,5 +1,4 @@
 export function numberConverter(number) {
-
     let numRound = null;
     let numString = '';
 
@@ -24,3 +23,4 @@ export function numberConverter(number) {
 
     // console.log(numString);
 }
+

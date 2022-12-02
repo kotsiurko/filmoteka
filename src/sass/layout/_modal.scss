@@ -21,6 +21,7 @@
 
 .modal {
   position: relative;
+  max-height: 100vh;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
@@ -57,8 +58,18 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: #ffffff;
+  background-color: transparent;
   border: none;
+  cursor: pointer;
+}
+
+.icon {
+  stroke: $page-color;
+}
+
+.icon:hover,
+.icon:focus {
+  stroke: $accent-color;
 }
 
 .modal-image {
@@ -198,4 +209,8 @@
     border: 1px solid $accent-color;
     background-color: $menu-highlight;
   }
+}
+
+.noScroll {
+  overflow: hidden;
 }

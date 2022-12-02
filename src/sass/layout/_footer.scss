@@ -34,29 +34,27 @@ p {
   }
 }
 
-footer {
+.footer {
   background-color: $footer-bg-color;
 }
 
-@include _mobile {
-  .copyright {
-    margin: 0px;
-    display: flex;
-    justify-content: center;
-    padding-top: 29px;
-    padding-bottom: 10px;
-  }
+.copyright {
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  padding-top: 29px;
+  padding-bottom: 10px;
+}
 
-  .developers {
-    margin: 0px;
-    display: flex;
-    justify-content: center;
-    padding-bottom: 30px;
-  }
-  .page__footer {
-    font-size: 14px;
-    font-weight: 400;
-  }
+.developers {
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+.page__footer {
+  font-size: 14px;
+  font-weight: 400;
 }
 
 @include _tablet {
