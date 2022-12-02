@@ -12,6 +12,8 @@ const QUEUE_STORAGE_KEY = "films in queue"
 
 loaderRender();
 
+
+
 watchedFilmListBtnEl.addEventListener('click', onLSLoadWatched);
 queuedFilmListBtnEl.addEventListener('click', onLSLoadQueue);
 
@@ -28,9 +30,9 @@ if (LS_WWATCHED_ARRAY.length !== 0) {
 
 // Функція витягує переглянуті фільми з ЛокалСторедж
 function onLSLoadWatched() {
-    watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY))
-    console.log(watchedFilms);
-    renderFilmCards(watchedFilms);
+  watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY));
+  console.log(watchedFilms);
+  renderFilmCards(watchedFilms);
 }
 
 // Функція витягує фільми з черги з ЛокалСторедж
@@ -59,3 +61,4 @@ function renderFilmCards(films) {
     emptyEl.innerHTML = '';
     cards.innerHTML = cardTemplate(markup);
 }
+
