@@ -68,8 +68,6 @@ async function onModalOpenClick(event) {
         localStrgWriteWatched(data);
       });
 
-      const addToQueueBtnEl = document.querySelector(".queue");
-
       console.log(addToQueueBtnEl);
       addToQueueBtnEl.addEventListener(
         'click',
