@@ -1,2 +1,0 @@
-const t=document.querySelector("#theme-switch-toggle"),e="light-theme",c="dark-theme";function o(){document.body.classList.toggle(c),document.body.classList.toggle(e),document.body.classList.contains(e)?(t.setAttribute("checked",!1),localStorage.setItem("active-theme",e)):document.body.classList.contains(c)&&(t.setAttribute("checked",!0),localStorage.setItem("active-theme",c))}document.body.classList.add(e),t.addEventListener("change",o),localStorage.getItem("active-theme")===c&&o();
-//# sourceMappingURL=library.a4f1bd83.js.map
