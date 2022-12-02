@@ -10,26 +10,36 @@ const body = document.querySelector('body');
 // слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
 const movieDB = new MovieDB();
+
+// Функція відкриття модалки
 async function onModalOpenClick(event) {
   event.preventDefault();
 
   if (event.target.closest('li')) {
-    // console.log('Тицаю на ЛІ');
     modalEl.classList.remove('is-hidden');
 
     modalCloseEl.addEventListener('click', onModalCloseClick);
     backdropEl.addEventListener('click', onBackdropElClick);
     window.addEventListener('keydown', onEscBtnClick);
+
     const selectedMovie = event.target.closest('li');
     // console.log(selectedMovie);
     const FilmID = selectedMovie.dataset.movieid;
     // console.log(FilmID);
     try {
       const { data } = await movieDB.fetchMovieById(FilmID);
-      // console.log(data);
+
+      // Достукуємось до ЛокалСторедж і робимо перевірку на
+      // наявність фільму в списках доданих
+      // console.log(data.id);
+      const LS_WWATCHED_ARRAY = JSON.parse(localStorage.getItem("watched films"));
+      // console.log(LS_WWATCHED_ARRAY);
+
+
       renderFilmCard(data);
+
       body.classList.add('noScroll');
-      const watchedBtnEl = document.querySelector('.watched');
+  
       watchedBtnEl.addEventListener(
         'click',
         (onWatchedBtnElClick = () => {
@@ -37,6 +47,29 @@ async function onModalOpenClick(event) {
         })
       );
       const addToQueueBtnEl = document.querySelector('.queue');
+
+
+      const foundFilm = LS_WWATCHED_ARRAY.find(el => el.id === data.id);
+
+      const watchedBtnEl = document.querySelector(".watched");
+      if (foundFilm) {
+        watchedBtnEl.textContent = 'Remove from watched';
+        // тут має бути логіка видалення фільму
+        // витягнути масив об'єктів
+        // видалити foundFilm з цього масиву
+        // записати новий масив в ЛокалСторедж
+        // JSON.parse(localStorage.getItem("watched films")
+      }
+
+      // console.dir(watchedBtnEl);
+
+
+      watchedBtnEl.addEventListener("click", onWatchedBtnElClick = () => {
+        localStrgWriteWatched(data);
+      });
+
+      const addToQueueBtnEl = document.querySelector(".queue");
+
       console.log(addToQueueBtnEl);
       addToQueueBtnEl.addEventListener(
         'click',
@@ -147,17 +180,10 @@ function localStrgWriteWatched(data) {
 
   filmGenres = prepareObject(data.genres);
 
-  const watchedFilms =
-    JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
-  const {
-    poster_path,
-    title,
-    vote_average,
-    vote_count,
-    popularity,
-    original_title,
-    overview,
-  } = data;
+
+  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
+  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview, release_date, id } = data;
+
   const filmData = {
     title: title,
     poster_path: poster_path,
@@ -167,6 +193,8 @@ function localStrgWriteWatched(data) {
     original_title: original_title,
     overview: overview,
     filmGenres: filmGenres,
+    release_date: release_date,
+    id: id,
   };
   watchedFilms.push(filmData);
   const stringifyData = JSON.stringify(watchedFilms);
@@ -175,17 +203,10 @@ function localStrgWriteWatched(data) {
 
 function localStrgWriteAddToQueue(data) {
   filmGenres = prepareObject(data.genres);
-  const watchedFilms =
-    JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || [];
-  const {
-    poster_path,
-    title,
-    vote_average,
-    vote_count,
-    popularity,
-    original_title,
-    overview,
-  } = data;
+
+  const watchedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || []
+  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview, release_date, id } = data;
+
   const filmData = {
     title: title,
     poster_path: poster_path,
@@ -195,6 +216,8 @@ function localStrgWriteAddToQueue(data) {
     original_title: original_title,
     overview: overview,
     filmGenres: filmGenres,
+    release_date: release_date,
+    id: id,
   };
 
   watchedFilms.push(filmData);
@@ -203,5 +226,37 @@ function localStrgWriteAddToQueue(data) {
 }
 
 function localStorageRemove(data) {
-  localStorage.removeItem(data);
+  localStorage.removeItem(data)
 }
+
+
+
+// function onModalOpenClick(event) {
+//   event.preventDefault();
+//   if (event.target.closest('li')) {
+//     modalEl.classList.remove('is-hidden');
+//     modalCloseEl.addEventListener('click', onModalCloseClick);
+//     backdropEl.addEventListener('click', onBackdropElClick);
+//     window.addEventListener('keydown', onEscBtnClick);
+//   } else {
+//     alert('Please click on film image');
+//   }
+//   return;
+// }
+// function onModalCloseClick() {
+//   modalEl.classList.add('is-hidden');
+//   modalCloseEl.removeEventListener('click', onModalCloseClick);
+//   backdropEl.removeEventListener('click', onBackdropElClick);
+//   window.removeEventListener('keydown', onEscBtnClick);
+// }
+// function onBackdropElClick(event) {
+//   if (event.target === backdropEl) {
+//     onModalCloseClick();
+//   }
+// }
+// function onEscBtnClick(event) {
+//   if (event.code === 'Escape') {
+//     onModalCloseClick();
+//   }
+// }
+
