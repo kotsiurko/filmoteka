@@ -293,7 +293,7 @@ function renderFilmCard(data) {
 function localStrgWriteWatched(data) {
   console.log(data);
 
-  filmGenres = prepareObject(data.genres);
+  let filmGenres = prepareObject(data.genres);
 
   const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
   const { poster_path, title, vote_average, vote_count, popularity, original_title, overview, release_date, id } = data;
@@ -315,7 +315,7 @@ function localStrgWriteWatched(data) {
 }
 
 function localStrgWriteAddToQueue(data) {
-  filmGenres = prepareObject(data.genres);
+  let filmGenres = prepareObject(data.genres);
   const watchedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || []
   const { poster_path, title, vote_average, vote_count, popularity, original_title, overview, release_date, id } = data;
   const filmData = {
