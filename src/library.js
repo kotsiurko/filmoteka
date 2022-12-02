@@ -2,6 +2,5 @@
 // import './js/pagination';
 // import './js/to-top';
 // import './js/preloader';
-// import './js/theme-switch';
-import './js/library-cards';
-
+import './js/theme-switch';
+// import './js/library-cards';

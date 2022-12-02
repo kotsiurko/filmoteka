@@ -58,8 +58,18 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: #ffffff;
+  background-color: transparent;
   border: none;
+  cursor: pointer;
+}
+
+.icon {
+  stroke: $page-color;
+}
+
+.icon:hover,
+.icon:focus {
+  stroke: $accent-color;
 }
 
 .modal-image {

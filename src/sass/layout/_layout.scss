@@ -22,10 +22,18 @@ body {
   height: 100%;
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
+  background-color: $accent-color;
+  width: 5px;
+  border-radius: 5px;
+  border: 1px solid $accent-color;
+}
+
+*::-webkit-scrollbar {
   background-color: transparent;
-  border-radius: 20px;
-  border: 3px solid $accent-color;
+  border-radius: 12px;
+  border: 1px solid $accent-color;
+  width: 5px;
 }
 
 h1,
