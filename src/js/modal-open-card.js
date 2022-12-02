@@ -63,15 +63,19 @@ function onEscBtnClick(event) {
     onModalCloseClick();
   }
 }
-function renderFilmCard({
-  poster_path,
-  title,
-  vote_average,
-  vote_count,
-  popularity,
-  original_title,
-  overview,
-}) {
+
+function renderFilmCard(data) {
+  const {
+    poster_path,
+    title,
+    vote_average,
+    vote_count,
+    popularity,
+    original_title,
+    overview,
+  } = data;
+  
+   
   const markup = `
       <img src="https://image.tmdb.org/t/p/w500${poster_path}" class="modal-image" alt="${title}" />
            <div class="description-container">
@@ -93,7 +97,7 @@ function renderFilmCard({
           </li>
           <li class="film-info__item">
             <p class="film-info__item--el">Genre</p>
-            <span class="film-info__params">Western</span>
+            <span class="film-info__params"></span>
           </li>
         </ul>
         <h3 class="film-info__about">About</h3>
@@ -113,7 +117,7 @@ const WATCHED_STORAGE_KEY = "watched films";
 const QUEUE_STORAGE_KEY = "films in queue"
 
 function localStrgWriteWatched(data) {
-  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || []
+  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
   const { poster_path, title, vote_average, vote_count, popularity, original_title, overview} = data;
   const filmData = {
     title: title,

@@ -90,7 +90,6 @@ export function renderFilmCards(films) {
     } else {
       genreStr = newGenres.join(', ');
     }
-
     // Формую підготовлений об'єкт даних для закидання в handlebar
     const editedFilm = {
       ...film,
