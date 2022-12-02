@@ -21,6 +21,7 @@
 
 .modal {
   position: relative;
+  max-height: 100vh;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
@@ -198,4 +199,8 @@
     border: 1px solid $accent-color;
     background-color: $menu-highlight;
   }
+}
+
+.noScroll {
+  overflow: hidden;
 }

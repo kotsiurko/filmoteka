@@ -1,53 +1,50 @@
 import { MovieDB } from './api-service';
 import cardTemplate from '../templates/film-card.hbs';
 import genres from './genres.json';
-import { renderWarningMsg } from './test-warning';
+// import { renderWarningMsg, renderEmptyMsg } from './test-warning';
 import { loaderRender } from './preloader';
+import { numberConverter } from './prepare-number';
 
 const cards = document.querySelector('.cards');
 const searchFormEl = document.querySelector('#search-form');
+const searchFieldEl = document.querySelector('.search-field');
+const warningField = document.querySelector('.js-warning');
+const searchResField = document.querySelector('.js-search-results');
 
 const movieDB = new MovieDB();
 
 onHomePageLoad();
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
-// let totalPages = null;
-
-// =============================================================================
-// виклик функції по вимальовуванні детальної інформації в модалці має вигляд:
-// getMovieDetails('774752');
-// =============================================================================
-export async function getMovieDetails(id) {
-  try {
-    const { data } = await movieDB.fetchMovieById(id);
-    // =============================================
-    // Тут має бути відкриття модалки
-    // і передавання в неї даних із об'єкту data
-    // id витягуємо із дата-атрибуту li-елемента
-    // =============================================
-    // console.log(data);
-    return data;
-  } catch (err) {
-    console.log(err);
-  }
-}
-getMovieDetails('774752');
-// =============================================================================
-
 async function onSearchFormSubmit(event) {
   event.preventDefault();
+  const inputSearchEl = event.target.elements.query.value.trim();
+  if (inputSearchEl.length === 0) {
+    searchResField.textContent = 'Please enter your request';
+    setTimeout(() => {
+      searchResField.textContent = '';
+    }, 3000);
 
-  // movieDB.page = 1;
-  movieDB.searchQuery = event.target.elements.query.value;
-  if (movieDB.searchQuery.length === 0) {
-    renderWarningMsg();
+    event.currentTarget.reset();
     return;
   }
 
+  // movieDB.page = 1;
+  movieDB.searchQuery = event.target.elements.query.value;
+
   try {
     const { data } = await movieDB.fetchSearch();
+    searchFieldEl.value = '';
     console.log(data.results);
+    if (data.results.length === 0) {
+      warningField.textContent =
+        'Search result not successful. Enter the correct movie name and try again';
+      setTimeout(() => {
+        warningField.textContent = '';
+      }, 3000);
+
+      return;
+    }
     renderFilmCards(data.results);
   } catch (err) {
     console.log(err);
@@ -55,7 +52,6 @@ async function onSearchFormSubmit(event) {
 }
 
 async function onHomePageLoad() {
-  // loaderRender();
   try {
     const { data } = await movieDB.fetchTrendMovies(1);
     if (data) {
@@ -69,7 +65,6 @@ async function onHomePageLoad() {
 
 export function renderFilmCards(films) {
   const markup = films.map(film => {
-
     // Повертаю масив текстових жанрів до конкретного фільму
     const newGenres = film.genre_ids.map(id => {
       return genres.genres
@@ -91,12 +86,16 @@ export function renderFilmCards(films) {
       genreStr = newGenres.join(', ');
     }
 
+    const rating = numberConverter(film.vote_average);
+    // console.log(rating);
+
     // Формую підготовлений об'єкт даних для закидання в handlebar
     const editedFilm = {
       ...film,
       poster_path: `https://image.tmdb.org/t/p/w500${film.poster_path}`,
       genres: genreStr,
       release_date: film.release_date.slice(0, 4),
+      vote_average: rating,
     };
     return editedFilm;
   });

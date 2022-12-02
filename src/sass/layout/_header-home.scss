@@ -116,26 +116,50 @@
   }
 }
 
-.header-warning {
+.js-search-results {
   position: absolute;
   text-align: center;
-  top: 156px;
-  font-size: 14px;
-  line-height: 1.14;
+  top: 185px;
+  font-size: 16px;
+  line-height: 1.18;
 
   @media screen and (max-width: ($tablet - 1)) {
     max-width: ($mobile);
   }
 
   @media screen and (min-width: $tablet) {
-    width: ($tablet - 153);
+    width: 545px;
     text-align: center;
   }
 
   @media screen and (min-width: $desktop) {
-    width: ($desktop - 420);
-    text-align: center;
+    width: 1060px;
+    top: 165px;
+    // text-align: center;
   }
 
   color: $menu-highlight;
+}
+
+.js-warning {
+  position: absolute;
+  text-align: center;
+  top: 185px;
+  font-size: 16px;
+  line-height: 1.18;
+  color: $menu-highlight;
+  @media screen and (max-width: ($tablet - 1)) {
+    max-width: ($mobile);
+  }
+
+  @media screen and (min-width: $tablet) {
+    width: 660px;
+    text-align: center;
+  }
+
+  @media screen and (min-width: $desktop) {
+    width: 1200px;
+    top: 165px;
+    // text-align: center;
+  }
 }

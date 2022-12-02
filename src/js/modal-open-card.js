@@ -6,14 +6,17 @@ const modalCloseEl = document.querySelector('[data-modal-close]');
 const modalEl = document.querySelector('[data-modal]');
 const backdropEl = document.querySelector('.backdrop');
 const modalContainerEl = document.querySelector('.tablet-container');
+const body = document.querySelector('body');
 // слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
 const movieDB = new MovieDB();
 async function onModalOpenClick(event) {
   event.preventDefault();
+
   if (event.target.closest('li')) {
     // console.log('Тицаю на ЛІ');
     modalEl.classList.remove('is-hidden');
+
     modalCloseEl.addEventListener('click', onModalCloseClick);
     backdropEl.addEventListener('click', onBackdropElClick);
     window.addEventListener('keydown', onEscBtnClick);
@@ -25,17 +28,24 @@ async function onModalOpenClick(event) {
       const { data } = await movieDB.fetchMovieById(FilmID);
       // console.log(data);
       renderFilmCard(data);
-      const watchedBtnEl = document.querySelector(".watched");
-      watchedBtnEl.addEventListener("click", onWatchedBtnElClick = () => {
-        localStrgWriteWatched(data);
-      });
-      const addToQueueBtnEl = document.querySelector(".queue");
+      body.classList.add('noScroll');
+      const watchedBtnEl = document.querySelector('.watched');
+      watchedBtnEl.addEventListener(
+        'click',
+        (onWatchedBtnElClick = () => {
+          localStrgWriteWatched(data);
+        })
+      );
+      const addToQueueBtnEl = document.querySelector('.queue');
       console.log(addToQueueBtnEl);
-      addToQueueBtnEl.addEventListener("click", onaddToQueueElClick = () => {
-        localStrgWriteAddToQueue(data);
-      });
+      addToQueueBtnEl.addEventListener(
+        'click',
+        (onaddToQueueElClick = () => {
+          localStrgWriteAddToQueue(data);
+        })
+      );
       function onWatchedBtnElClick() {
-        localStorageWrite(data)
+        localStorageWrite(data);
       }
     } catch (err) {
       console.log(err);
@@ -47,18 +57,22 @@ async function onModalOpenClick(event) {
 }
 function onModalCloseClick() {
   modalEl.classList.add('is-hidden');
+  body.classList.remove('noScroll');
   modalCloseEl.removeEventListener('click', onModalCloseClick);
   backdropEl.removeEventListener('click', onBackdropElClick);
   window.removeEventListener('keydown', onEscBtnClick);
 }
 function onBackdropElClick(event) {
   if (event.target === backdropEl) {
+    body.classList.remove('noScroll');
+
     onModalCloseClick();
   }
 }
 function onEscBtnClick(event) {
   if (event.code === 'Escape') {
     onModalCloseClick();
+    body.classList.remove('noScroll');
   }
 }
 
@@ -73,11 +87,10 @@ function prepareObject(array) {
   }
 
   if (newArr.length >= 4) {
-    filmGenres = newArr.slice(0, 2).join(', ') + ", Others";
+    filmGenres = newArr.slice(0, 2).join(', ') + ', Others';
   }
   return filmGenres;
 }
-
 
 function renderFilmCard(data) {
   const {
@@ -91,7 +104,6 @@ function renderFilmCard(data) {
   } = data;
 
   let filmGenres = prepareObject(data.genres);
-
 
   const markup = `
       <img src="https://image.tmdb.org/t/p/w500${poster_path}" class="modal-image" alt="${title}" />
@@ -128,15 +140,24 @@ function renderFilmCard(data) {
         </div>`;
   modalContainerEl.innerHTML = markup;
 }
-const WATCHED_STORAGE_KEY = "watched films";
-const QUEUE_STORAGE_KEY = "films in queue"
+const WATCHED_STORAGE_KEY = 'watched films';
+const QUEUE_STORAGE_KEY = 'films in queue';
 function localStrgWriteWatched(data) {
   console.log(data);
 
   filmGenres = prepareObject(data.genres);
 
-  const watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
-  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview } = data;
+  const watchedFilms =
+    JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY)) || [];
+  const {
+    poster_path,
+    title,
+    vote_average,
+    vote_count,
+    popularity,
+    original_title,
+    overview,
+  } = data;
   const filmData = {
     title: title,
     poster_path: poster_path,
@@ -154,8 +175,17 @@ function localStrgWriteWatched(data) {
 
 function localStrgWriteAddToQueue(data) {
   filmGenres = prepareObject(data.genres);
-  const watchedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || []
-  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview } = data;
+  const watchedFilms =
+    JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY)) || [];
+  const {
+    poster_path,
+    title,
+    vote_average,
+    vote_count,
+    popularity,
+    original_title,
+    overview,
+  } = data;
   const filmData = {
     title: title,
     poster_path: poster_path,
@@ -172,7 +202,6 @@ function localStrgWriteAddToQueue(data) {
   localStorage.setItem(QUEUE_STORAGE_KEY, stringifyData);
 }
 
-
 function localStorageRemove(data) {
-  localStorage.removeItem(data)
+  localStorage.removeItem(data);
 }

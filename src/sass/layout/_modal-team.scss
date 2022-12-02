@@ -1,5 +1,6 @@
 .backdrop-team {
   position: fixed;
+  z-index: 5;
   top: 0;
   left: 0;
   width: 100%;
@@ -20,6 +21,7 @@
 
 .modal-team {
   position: relative;
+
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
