@@ -1,5 +1,4 @@
 const checkbox = document.querySelector('#theme-switch-toggle');
-
 const theme = {
   LIGHT: 'light-theme',
   DARK: 'dark-theme',

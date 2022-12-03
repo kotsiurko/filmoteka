@@ -1,4 +1,5 @@
 .backdrop-team {
+  z-index: 5;
   position: fixed;
   top: 0;
   left: 0;
@@ -8,24 +9,27 @@
   opacity: 1;
   transition: opacity 250ms var(--timing-function);
 }
-
 .backdrop-team.is-hidden {
   opacity: 0;
   pointer-events: none;
 }
-
 .backdrop-team.is-hidden .modal-team {
   transform: translate(-50%, -50%) scale(0.5);
 }
-
 .modal-team {
+  max-height: 100vh;
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
   width: 280px;
   // height: 940px;
-  background-color: #3f3dd6;
+  background: linear-gradient(
+    180deg,
+    rgb(1, 179, 201) 2.7%,
+    rgb(255, 199, 89) 97.2%
+  );
+
   // background-image: repeating-linear-gradient(
   //   to bottom right,
   //   rgb(14, 14, 15),
@@ -33,8 +37,8 @@
   //   rgb(43, 68, 27) 5px,
   //   rgb(49, 34, 34) 100px /* Визначає розмір градієнта */
   // );
-  // background: linear-gradient(to bottom right, #131212 15%, #ce6814 65%);
-  // background: linear-gradient(to bottom right, #131212 15%, #ce6814 65%);
+  // background: linear-gradient(to bottom right, #131212 15%, #CE6814 65%);
+  // background: linear-gradient(to bottom right, #131212 15%, #CE6814 65%);
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
     0px 2px 1px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
@@ -44,7 +48,6 @@
   padding-left: 20px;
   padding-bottom: 40px;
   overflow-y: auto;
-
   @include _tablet {
     width: 704px;
     height: 552px;
@@ -52,7 +55,6 @@
     padding-left: 60px;
     padding-right: 60px;
   }
-
   @include _desktop {
     width: 806px;
     height: 558px;
@@ -65,25 +67,22 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: #cebcbc;
+  background-color: transparent;
   border: none;
   cursor: pointer;
 }
-
 .team {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
   align-items: baseline;
-
   @include _tablet {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 30px;
   }
 }
-
 .team-heading {
   text-align: center;
   margin-bottom: 20px;
@@ -91,12 +90,13 @@
   color: rgb(34, 25, 41);
 }
 .team__members {
+  margin: 10px;
   width: 100%;
-  border: 1px solid #000;
+  border: 1px solid #bbe4d6c2;
   border-radius: 15px;
-  background-color: rgb(147, 101, 219);
-  box-shadow: 6px 5px 8px rgb(29, 27, 27);
+  box-shadow: 5px 5px 10px #bbe4d6c2;
   @include _tablet {
+    margin: 0;
     width: calc((100% - 40px) / 2);
   }
   @include _desktop {
@@ -104,12 +104,13 @@
   }
 }
 .team__members:hover {
-  box-shadow: 10px 10px 5px lightblue;
+  box-shadow: 5px 5px 10px #2b8364c2;
+  border: 1px solid #2b8364c2;
 }
+
 .team__photo {
   width: 100%;
   border-radius: 15px;
-
   @include _tablet {
     margin-bottom: 12px;
   }
@@ -128,8 +129,4 @@
   justify-content: center;
   gap: 20px;
   margin-bottom: 20px;
-}
-
-.icon:hover {
-  fill: rgb(14, 80, 202);
 }

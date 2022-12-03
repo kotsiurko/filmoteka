@@ -99,6 +99,11 @@ body.dark-theme {
   background-color: rgb(51, 51, 51);
   //   background-image: ;
 
+  .card:hover,
+  .card:focus {
+    box-shadow: 3px 3px 6px $accent-color;
+  }
+
   & .footer {
     background: linear-gradient(
       180deg,
