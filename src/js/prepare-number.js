@@ -17,10 +17,13 @@ export function numberConverter(number) {
         return numString;
     }
 
-    if (number >= 10) {
+    if (number === 10) {
         return '10.0';
     }
 
-    // console.log(numString);
+    if (number > 10) {
+        numRound = (Math.round(number * 10) / 10).toString();
+        return numRound;
+    }
 }
 
