@@ -41,14 +41,14 @@ if (LS_WWATCHED_ARRAY.length !== 0) {
 
 // Функція витягує переглянуті фільми з ЛокалСторедж
 function onLSLoadWatched() {
-    watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY));
+    let watchedFilms = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY));
     console.log(watchedFilms);
     renderFilmCards(watchedFilms);
 }
 
 // Функція витягує фільми з черги з ЛокалСторедж
 function onLSLoadQueue() {
-    queuedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY))
+    let queuedFilms = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY))
     console.log(queuedFilms);
     renderFilmCards(queuedFilms);
 }
