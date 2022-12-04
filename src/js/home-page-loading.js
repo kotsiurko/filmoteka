@@ -19,7 +19,7 @@ const movieDB = new MovieDB();
 onHomePageLoad();
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
-async function onSearchFormSubmit(event, globalCurrentPage) {
+async function onSearchFormSubmit(event) {
   event.preventDefault();
   cardsEl.dataset.position = searchAttr;
 
@@ -36,7 +36,7 @@ async function onSearchFormSubmit(event, globalCurrentPage) {
 
   movieDB.searchQuery = event.target.elements.query.value;
 
-  anotherFetchSearch(globalCurrentPage);
+  anotherFetchSearch(1);
 }
 
 async function anotherFetchSearch(globalCurrentPage) {
