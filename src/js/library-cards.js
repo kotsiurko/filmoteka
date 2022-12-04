@@ -53,6 +53,9 @@ function onLSLoadWatched() {
     if (filmsArray === null) {
         return;
     }
+
+
+
     contentRender(WATCHED_STORAGE_KEY, 'watched', 1);
 }
 
@@ -81,6 +84,8 @@ function contentRender(storageKey, attrib, currPage) {
 
     // змінює дата-атрибут
     cards.dataset.position = attrib;
+    // Додаєм атрибут поточної позиції пагінації
+    cards.dataset.page = currPage;
 
     // Визначаю кількість сторінок
     let allPages = splitArrayOnSubarrays(filmArr).length;
@@ -90,6 +95,11 @@ function contentRender(storageKey, attrib, currPage) {
     // (тобто масива в масиві) починається з 0
     renderFilmCardPage = currPage - 1;
     let arrPortion = splitArrayOnSubarrays(filmArr)[renderFilmCardPage];
+
+    // Перевірка підмасиву на те, чи він не пустий
+    if (arrPortion === "undefined") {
+        return;
+    }
 
     // рендерить масив фільмів
     renderFilmCards(arrPortion, currPage);
@@ -105,6 +115,9 @@ function contentRender(storageKey, attrib, currPage) {
 // - Приймає масив об'єктів
 // - Рендерить об'єкти в картки на сторінці
 function renderFilmCards(films) {
+    if (films === undefined) {
+        return;
+    }
 
     const markup = films.map(film => {
 
@@ -140,7 +153,7 @@ paginationBox.addEventListener('click', onPaginationLibraryClick);
 // Функція розбивки масиву на підмасиви
 // - повертає масив масивів
 function splitArrayOnSubarrays(array) {
-    // console.log(array);
+
     const allCards = 20;
     const sliceArr = array
         .map(function (el, ind) {
@@ -274,11 +287,29 @@ function onModalCloseClick() {
 
     // Викликаю функцію ререндеру вмісту сторінки бібліотеки
     // Умови для ререндеру
-    if (cards.dataset.position === "queued") {
-        contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
-    }
     if (cards.dataset.position === "watched") {
-        contentRender(WATCHED_STORAGE_KEY, 'watched', 1);
+
+        let currDataPage = Number(cards.dataset.page);
+        contentRender(WATCHED_STORAGE_KEY, 'watched', currDataPage);
+    }
+    if (cards.dataset.position === "queued") {
+
+        const filmArr = readFromLS(QUEUE_STORAGE_KEY);
+        let allPages = splitArrayOnSubarrays(filmArr).length;
+        let arrPortion = splitArrayOnSubarrays(filmArr)[renderFilmCardPage];
+        console.log('allPages :>> ', allPages);
+        console.log('arrPortion :>> ', arrPortion);
+
+        if (cards.dataset.page === allPages && arrPortion.length === 1) {
+            contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
+            return;
+        }
+
+        // Якщо наш атрибут dataset.page === allPages
+        // І якщо arrPortion.length === 1
+
+        let currDataPage = Number(cards.dataset.page);
+        contentRender(QUEUE_STORAGE_KEY, 'queued', currDataPage);
     }
 
 }
