@@ -4,3 +4,4 @@
 // import './js/preloader';
 import './js/theme-switch';
 import './js/library-cards';
+import './js/modal-open-card';

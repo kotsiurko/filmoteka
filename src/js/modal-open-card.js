@@ -1,5 +1,8 @@
 import { MovieDB } from './api-service';
 import { numberConverter } from './prepare-number';
+// import { renderFilmCards } from './home-page-loading';
+// console.dir(renderFilmCards);
+
 // import { getMovieDetails } from './home-page-loading';
 const modalOpenEl = document.querySelector('[data-modal-open]');
 const modalCloseEl = document.querySelector('[data-modal-close]');
@@ -72,7 +75,7 @@ async function onModalOpenClick(event) {
       // Далі йде логіка перезапису атрибута data-watched="false/true"
       // в залежності від того, чи є фільм в Переглянутих в LS
 
-      // Сценарій, коли ЛС p Переглянутими повністю пустий
+      // Сценарій, коли ЛС з Переглянутими повністю пустий
       if (localStorage.getItem('watched films') === null) {
         // Випадок, коли ЛС чистий і ми все одно можемо записати фільм в ЛС
         watchedBtnEl.dataset.watched = 'false';
@@ -110,6 +113,10 @@ async function onModalOpenClick(event) {
         if (watchedBtnEl.dataset.watched === 'false') {
           //	викликаю функцію запису об'єкта в ЛС;
           addFilmToLS(data, "watched films");
+
+          // Перемальовую картки, коли змінюю ЛС
+          // renderFilmCards(data);
+
           // Перемальовую кнопку
           watchedBtnEl.dataset.watched = 'true';
           watchedBtnEl.textContent = 'Remove from Watched';
@@ -124,6 +131,10 @@ async function onModalOpenClick(event) {
         if (watchedBtnEl.dataset.watched === 'true') {
           //	викликаю функцію видалення об'єкта з ЛС:
           removeFilmFromLS(modalFilmId, "watched films");
+
+          // Перемальовую картки, кои змінюю ЛС
+          // renderFilmCards(data);
+
           // Перемальовую кнопку
           watchedBtnEl.dataset.watched = 'false';
           watchedBtnEl.textContent = 'Add to Watch';
@@ -206,9 +217,10 @@ async function onModalOpenClick(event) {
     } catch (err) {
       console.log(err);
     }
-  } else {
-    alert('Please click on film image');
   }
+  // else {
+  //   alert('Please click on film image');
+  // }
   return;
 }
 // ======================================================
