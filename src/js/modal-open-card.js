@@ -11,14 +11,13 @@ const backdropEl = document.querySelector('.backdrop');
 const modalContainerEl = document.querySelector('.tablet-container');
 const body = document.querySelector('body');
 
-const WATCHED_STORAGE_KEY = "watched films";
-const QUEUE_STORAGE_KEY = "films in queue";
+const WATCHED_STORAGE_KEY = 'watched films';
+const QUEUE_STORAGE_KEY = 'films in queue';
 
 // слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
 
 const movieDB = new MovieDB();
-
 
 // ======================================================
 // Функції-обробники закриття/відериття модального вікна
@@ -61,13 +60,12 @@ async function onModalOpenClick(event) {
       const { data } = await movieDB.fetchMovieById(FilmID);
       renderFilmCard(data);
       body.classList.add('noScroll');
-      const watchedBtnEl = document.getElementById("watched");
-      const queuedBtnEl = document.getElementById("queued");
+      const watchedBtnEl = document.getElementById('watched');
+      const queuedBtnEl = document.getElementById('queued');
 
       // зчитування інформації з дата-атрибуту кнопки
       const modalFilmIdEl = document.querySelector('[data-filmid]');
       const modalFilmId = modalFilmIdEl.dataset.filmid;
-
 
       // ================================================
       // Блок роботи із Переглянутими фільмами та ЛС
@@ -84,11 +82,14 @@ async function onModalOpenClick(event) {
 
       // Сценарій, коли якісь фільми вже є в ЛС
       if (localStorage.getItem('watched films') !== null) {
-
         // Пошук фільму в масиві збережених в ЛС
-        const LS_WWATCHED_ARRAY = JSON.parse(localStorage.getItem("watched films"));
+        const LS_WWATCHED_ARRAY = JSON.parse(
+          localStorage.getItem('watched films')
+        );
         // Витягуємо індекс фільму з масиву збережених в ЛокалСторедж
-        let foundFilmIndex = LS_WWATCHED_ARRAY.findIndex(el => el.id === Number(modalFilmId));
+        let foundFilmIndex = LS_WWATCHED_ARRAY.findIndex(
+          el => el.id === Number(modalFilmId)
+        );
 
         // якщо фільму немає в ЛС
         if (foundFilmIndex === -1) {
@@ -100,7 +101,7 @@ async function onModalOpenClick(event) {
         if (foundFilmIndex + 1) {
           watchedBtnEl.dataset.watched = 'true';
           watchedBtnEl.textContent = 'Remove from Watched';
-          watchedBtnEl.addEventListener('click', onBtnWatchedClick)
+          watchedBtnEl.addEventListener('click', onBtnWatchedClick);
         }
       }
 
@@ -112,7 +113,7 @@ async function onModalOpenClick(event) {
         // якщо data-watched="false", то
         if (watchedBtnEl.dataset.watched === 'false') {
           //	викликаю функцію запису об'єкта в ЛС;
-          addFilmToLS(data, "watched films");
+          addFilmToLS(data, 'watched films');
 
           // Перемальовую картки, коли змінюю ЛС
           // renderFilmCards(data);
@@ -124,13 +125,13 @@ async function onModalOpenClick(event) {
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
             onBtnWatchedClick;
-          })
+          });
           return;
         }
         // якщо data-watched="true", то
         if (watchedBtnEl.dataset.watched === 'true') {
           //	викликаю функцію видалення об'єкта з ЛС:
-          removeFilmFromLS(modalFilmId, "watched films");
+          removeFilmFromLS(modalFilmId, 'watched films');
 
           // Перемальовую картки, кои змінюю ЛС
           // renderFilmCards(data);
@@ -142,13 +143,11 @@ async function onModalOpenClick(event) {
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
             onBtnWatchedClick;
-          })
+          });
           return;
         }
       }
       // ================================================
-
-
 
       // ================================================
       // Блок роботи із фільмами в Черзі та ЛС
@@ -157,30 +156,32 @@ async function onModalOpenClick(event) {
       // в залежності від того, чи є фільм в Черзі в LS
 
       // Сценарій, коли ЛС повністю пустий
-      if (localStorage.getItem("films in queue") === null) {
+      if (localStorage.getItem('films in queue') === null) {
         // Випадок, коли ЛС з Чергою чистий і ми все одно можемо записати фільм в ЛС
         queuedBtnEl.dataset.queued = 'false';
-        queuedBtnEl.addEventListener('click', onBtnQueuedClick)
+        queuedBtnEl.addEventListener('click', onBtnQueuedClick);
         return;
       }
 
-      if (localStorage.getItem("films in queue") !== null) {
+      if (localStorage.getItem('films in queue') !== null) {
         // Пошук фільму в масиві збережених в ЛС
-        const LS_ARRAY = JSON.parse(localStorage.getItem("films in queue"));
+        const LS_ARRAY = JSON.parse(localStorage.getItem('films in queue'));
         // Витягуємо індекс фільму з масиву збережених в ЛокалСторедж
-        let foundFilmIndex = LS_ARRAY.findIndex(el => el.id === Number(modalFilmId));
+        let foundFilmIndex = LS_ARRAY.findIndex(
+          el => el.id === Number(modalFilmId)
+        );
 
         // якщо фільму немає в ЛС
         if (foundFilmIndex === -1) {
           queuedBtnEl.dataset.queued = 'false';
           queuedBtnEl.textContent = 'add to queue';
-          queuedBtnEl.addEventListener('click', onBtnQueuedClick)
+          queuedBtnEl.addEventListener('click', onBtnQueuedClick);
         }
         // якщо фільм є в ЛС
         if (foundFilmIndex + 1) {
           queuedBtnEl.dataset.queued = 'true';
           queuedBtnEl.textContent = 'Remove from Queue';
-          queuedBtnEl.addEventListener('click', onBtnQueuedClick)
+          queuedBtnEl.addEventListener('click', onBtnQueuedClick);
         }
       }
 
@@ -188,7 +189,7 @@ async function onModalOpenClick(event) {
         // якщо data-queued="false", то
         if (queuedBtnEl.dataset.queued === 'false') {
           //	викликаю функцію запису об'єкта в ЛС;
-          addFilmToLS(data, "films in queue");
+          addFilmToLS(data, 'films in queue');
           // Перемальовую кнопку
           queuedBtnEl.dataset.queued = 'true';
           queuedBtnEl.textContent = 'Remove from Queue';
@@ -196,13 +197,13 @@ async function onModalOpenClick(event) {
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
             onBtnQueuedClick;
-          })
+          });
           return;
         }
         // якщо data-queued="true", то
         if (queuedBtnEl.dataset.queued === 'true') {
           //	викликаю функцію видалення об'єкта з ЛС:
-          removeFilmFromLS(modalFilmId, "films in queue");
+          removeFilmFromLS(modalFilmId, 'films in queue');
           // Перемальовую кнопку
           queuedBtnEl.dataset.queued = 'false';
           queuedBtnEl.textContent = 'Add to Queue';
@@ -210,7 +211,7 @@ async function onModalOpenClick(event) {
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
             onBtnQueuedClick;
-          })
+          });
           return;
         }
       }
@@ -225,8 +226,6 @@ async function onModalOpenClick(event) {
 }
 // ======================================================
 
-
-
 function prepareObject(array) {
   let newArr = array.map(el => el.name);
   let filmGenres = '';
@@ -235,16 +234,22 @@ function prepareObject(array) {
     filmGenres = newArr.join(', ');
   }
   if (newArr.length >= 4) {
-    filmGenres = newArr.slice(0, 2).join(', ') + ", Others";
+    filmGenres = newArr.slice(0, 2).join(', ') + ', Other';
   }
   return filmGenres;
 }
 
-
-
 function renderFilmCard(data) {
+  let posterPath = '';
+  const defaultImg =
+    'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg';
+
+  if (data.poster_path !== null) {
+    posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+  } else {
+    posterPath = defaultImg;
+  }
   const {
-    poster_path,
     title,
     vote_average,
     vote_count,
@@ -252,17 +257,18 @@ function renderFilmCard(data) {
     original_title,
     overview,
     id,
-    genres
+    genres,
   } = data;
+  console.log(vote_average);
+  console.log(data);
 
   let filmGenres = prepareObject(genres);
   let filmVotingAverage = numberConverter(vote_average);
   let cuttedPopularity = numberConverter(popularity);
 
-
   const markup = `
   <div hidden data-filmid="${id}"></div>
-      <img src="https://image.tmdb.org/t/p/w500${poster_path}" class="modal-image" alt="${title}" />
+      <img src="${posterPath}" class="modal-image" alt="${title}" />
            <div class="description-container">
         <h2 class="film-heading">${title}</h2>
         <ul class="film-info__list">
@@ -305,8 +311,18 @@ function renderFilmCard(data) {
 // ======================================================================
 function addFilmToLS(data, key) {
   let filmGenres = prepareObject(data.genres);
-  const filmsArray = JSON.parse(localStorage.getItem(key)) || []
-  const { poster_path, title, vote_average, vote_count, popularity, original_title, overview, release_date, id } = data;
+  const filmsArray = JSON.parse(localStorage.getItem(key)) || [];
+  const {
+    poster_path,
+    title,
+    vote_average,
+    vote_count,
+    popularity,
+    original_title,
+    overview,
+    release_date,
+    id,
+  } = data;
   const filmData = {
     title: title,
     poster_path: poster_path,
@@ -326,8 +342,6 @@ function addFilmToLS(data, key) {
 }
 // // ======================================================
 
-
-
 // // ======================================================
 // Універсальна функція ВИДАЛЕННЯ ФІЛЬМУ (filmId)
 // з Переглянути чи черги із ЛС
@@ -335,7 +349,6 @@ function addFilmToLS(data, key) {
 // key - ключ ("watched films" / "films in queue")
 // // ======================================================
 function removeFilmFromLS(filmId, key) {
-
   const LS_ARRAY = JSON.parse(localStorage.getItem(key));
   let foundFilmIndex = LS_ARRAY.findIndex(el => el.id === Number(filmId));
 

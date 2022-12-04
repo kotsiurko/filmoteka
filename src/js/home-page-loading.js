@@ -18,7 +18,7 @@ searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
 async function onSearchFormSubmit(event, globalCurrentPage) {
   event.preventDefault();
-  cards.dataset.position = 'searched'
+  cards.dataset.position = 'searched';
 
   const inputSearchEl = event.target.elements.query.value.trim();
   console.log(inputSearchEl);
@@ -35,7 +35,6 @@ async function onSearchFormSubmit(event, globalCurrentPage) {
   movieDB.searchQuery = event.target.elements.query.value;
 
   anotherFetchSearch(globalCurrentPage);
-
 }
 
 async function anotherFetchSearch(globalCurrentPage) {
@@ -64,22 +63,16 @@ async function anotherFetchSearch(globalCurrentPage) {
   }
 }
 
-
-
-
 export async function onHomePageLoad() {
-
   console.log(cards);
-  cards.dataset.position = 'trends'
+  cards.dataset.position = 'trends';
 
   try {
     const { data } = await movieDB.fetchTrendMovies(globalCurrentPage);
 
-
     let fetchCurrentPage = data.page;
     let fetchTotalPages = data.total_pages;
     paginationMarkup(fetchCurrentPage, fetchTotalPages);
-
 
     if (data) {
       loaderRender();
@@ -107,19 +100,40 @@ export function renderFilmCards(films) {
     // Формую стрічку із жанрами для відображення в картці
     let genreStr = '';
 
-    if (newGenres.length >= 3) {
-      const strBegin = newGenres.slice(0, 2).join(', ');
-      genreStr = strBegin + ', Other';
-    } else {
+    if (newGenres.length < 4) {
       genreStr = newGenres.join(', ');
     }
+    if (newGenres.length >= 4) {
+      genreStr = newGenres.slice(0, 2).join(', ') + ', Other';
+    }
+
+    if (film.genre_ids.length === 0) {
+      genreStr = 'Other';
+    }
+
+    let posterPath = '';
+    const defaultImg =
+      'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg';
+
+    if (film.poster_path !== null) {
+      posterPath = `https://image.tmdb.org/t/p/w500${film.poster_path}`;
+    } else {
+      posterPath = defaultImg;
+    }
+
+    // if (newGenres.length >= 3) {
+    //   const strBegin = newGenres.slice(0, 2).join(', ');
+    //   genreStr = strBegin + ', Other';
+    // } else {
+    //   genreStr = newGenres.join(', ');
+    // }
 
     const rating = numberConverter(film.vote_average);
 
     // Формую підготовлений об'єкт даних для закидання в handlebar
     const editedFilm = {
       ...film,
-      poster_path: `https://image.tmdb.org/t/p/w500${film.poster_path}`,
+      poster_path: posterPath,
       genres: genreStr,
       release_date: film.release_date.slice(0, 4),
       vote_average: rating,
@@ -128,9 +142,6 @@ export function renderFilmCards(films) {
   });
   cards.innerHTML = cardTemplate(markup);
 }
-
-
-
 
 // Добираємся до пагінації результатів пошуку
 
@@ -187,6 +198,7 @@ async function onPaginationHomeClick(event) {
     return;
   }
   if (event.target.textContent === '🡸') {
+    window.scrollTo(0, 0);
     if (cards.dataset.position === 'trends') {
       onHomePageLoad((globalCurrentPage -= 1)).then(data => {
         renderFilmCards(data.results);
@@ -204,6 +216,7 @@ async function onPaginationHomeClick(event) {
     }
   }
   if (event.target.textContent === '🡺') {
+    window.scrollTo(0, 0);
     if (cards.dataset.position === 'trends') {
       onHomePageLoad((globalCurrentPage += 1)).then(data => {
         renderFilmCards(data.results);
@@ -223,6 +236,7 @@ async function onPaginationHomeClick(event) {
 
   const page = Number(event.target.textContent);
   globalCurrentPage = page;
+  window.scrollTo(0, 0);
 
   if (cards.dataset.position === 'trends') {
     onHomePageLoad(globalCurrentPage).then(data => {
