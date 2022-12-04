@@ -4,6 +4,7 @@ import { numberConverter } from './prepare-number';
 // console.dir(renderFilmCards);
 import * as basicLightbox from 'basiclightbox';
 import 'basiclightbox/dist/basicLightbox.min.css'
+import defaultPhoto from '../images/default-photo.jpeg';
 // import { getMovieDetails } from './home-page-loading';
 const modalOpenEl = document.querySelector('[data-modal-open]');
 const modalCloseEl = document.querySelector('[data-modal-close]');
@@ -23,6 +24,10 @@ const movieDB = new MovieDB();
 // ======================================================
 // Функції-обробники закриття/відериття модального вікна
 // ======================================================
+/**
+ * 
+ * @param {*} event 
+ */
 function onBackdropElClick(event) {
   if (event.target === backdropEl) {
     body.classList.remove('noScroll');
@@ -43,6 +48,13 @@ function onModalCloseClick() {
   modalCloseEl.removeEventListener('click', onModalCloseClick);
   backdropEl.removeEventListener('click', onBackdropElClick);
   window.removeEventListener('keydown', onEscBtnClick);
+
+
+  // Перевірка на те, що остання порція масиву не містить одного фільму
+  // Зчитування дата атрибуту і порівняння його із довжиною великого масиву
+  // Якщо довжина малого сотаннього масиву === 1 
+
+
 }
 
 // Головна функція-обробник появи модального вікна
@@ -267,8 +279,7 @@ function prepareObject(array) {
 
 function renderFilmCard(data) {
   let posterPath = '';
-  const defaultImg =
-    'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg';
+  const defaultImg = defaultPhoto;
 
   if (data.poster_path !== null) {
     posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
@@ -285,8 +296,6 @@ function renderFilmCard(data) {
     id,
     genres,
   } = data;
-  console.log(vote_average);
-  console.log(data);
 
   let filmGenres = prepareObject(genres);
   let filmVotingAverage = numberConverter(vote_average);

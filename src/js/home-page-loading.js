@@ -3,6 +3,7 @@ import cardTemplate from '../templates/film-card-home.hbs';
 import genres from './genres.json';
 import { loaderRender } from './preloader';
 import { numberConverter } from './prepare-number';
+import defaultPhoto from '../images/default-photo.jpeg';
 
 const cards = document.querySelector('.cards');
 const searchFormEl = document.querySelector('#search-form');
@@ -64,7 +65,6 @@ async function anotherFetchSearch(globalCurrentPage) {
 }
 
 export async function onHomePageLoad() {
-  console.log(cards);
   cards.dataset.position = 'trends';
 
   try {
@@ -112,8 +112,7 @@ export function renderFilmCards(films) {
     }
 
     let posterPath = '';
-    const defaultImg =
-      'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg';
+    const defaultImg = defaultPhoto;
 
     if (film.poster_path !== null) {
       posterPath = `https://image.tmdb.org/t/p/w500${film.poster_path}`;
