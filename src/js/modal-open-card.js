@@ -2,7 +2,8 @@ import { MovieDB } from './api-service';
 import { numberConverter } from './prepare-number';
 // import { renderFilmCards } from './home-page-loading';
 // console.dir(renderFilmCards);
-
+import * as basicLightbox from 'basiclightbox';
+import 'basiclightbox/dist/basicLightbox.min.css'
 // import { getMovieDetails } from './home-page-loading';
 const modalOpenEl = document.querySelector('[data-modal-open]');
 const modalCloseEl = document.querySelector('[data-modal-close]');
@@ -67,7 +68,25 @@ async function onModalOpenClick(event) {
       // зчитування інформації з дата-атрибуту кнопки
       const modalFilmIdEl = document.querySelector('[data-filmid]');
       const modalFilmId = modalFilmIdEl.dataset.filmid;
-
+      
+      // слухач кнопки трейлера і колбек при кліку по ньому
+       const trailerBtnEl = document.querySelector(".trailer-link");
+       console.log(trailerBtnEl);
+       trailerBtnEl.addEventListener('click', onTrailerClick);
+      function onTrailerClick(e) {
+        
+        movieDB.getMovieTrailer(FilmID).then(data => {
+          const trailerKey = data.data.results.find(el => el.name === 'Official Trailer').key;
+          console.log(trailerKey);
+          const instance = basicLightbox.create(`<iframe width="560" height="280" class= "iframe" src="https://www.youtube.com/embed/JaV7mmc9HGw" title="YouTube video player" frameborder="0" allowfullscreen></iframe>`);
+          instance.show()
+          //  modalContainerEl.insertAdjacentHTML('beforeend', 
+          //    `<iframe width="280" height="240" src="https://www.youtube.com/embed/${trailerKey}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          //    `)
+        }
+          
+        );
+      }
 
       // ================================================
       // Блок роботи із Переглянутими фільмами та ЛС
@@ -93,7 +112,7 @@ async function onModalOpenClick(event) {
         // якщо фільму немає в ЛС
         if (foundFilmIndex === -1) {
           watchedBtnEl.dataset.watched = 'false';
-          watchedBtnEl.textContent = 'add to Watche';
+          watchedBtnEl.textContent = 'add to Watched';
           watchedBtnEl.addEventListener('click', onBtnWatchedClick);
         }
         // якщо фільм є в ЛС
@@ -293,6 +312,8 @@ function renderFilmCard(data) {
         <button class="button button__orange" id="watched" data-watched="false">add to Watched</button>
         <button class="button button__transparent" id="queued" data-queued="false">add to queue</button>
       </div>
+      <button class="trailer-link">
+      watch trailer</button>
         </div>`;
   
   modalContainerEl.innerHTML = markup;

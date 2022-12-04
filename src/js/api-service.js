@@ -41,6 +41,10 @@ export class MovieDB {
     return axios.get(`${this.#BASE_URL}/movie/${id}?api_key=${this.#API_KEY}`);
     // /movie/343611?api_key={api_key}
   }
+  getMovieTrailer(id){
+      return axios.get(`${this.#BASE_URL}/movie/${id}/videos?api_key=${this.#API_KEY}`);
+   
+  }  
 }
 
 // Заготовка властивостей для картки
