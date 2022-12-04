@@ -22,7 +22,6 @@ async function onSearchFormSubmit(event, globalCurrentPage) {
   cards.dataset.position = 'searched';
 
   const inputSearchEl = event.target.elements.query.value.trim();
-  console.log(inputSearchEl);
   if (inputSearchEl.length === 0) {
     searchResField.textContent = 'Please enter your request';
     setTimeout(() => {
@@ -47,7 +46,6 @@ async function anotherFetchSearch(globalCurrentPage) {
     paginationMarkup(fetchCurrentPage, fetchTotalPages);
 
     searchFieldEl.value = '';
-    console.log(data.results);
     if (data.results.length === 0) {
       warningField.textContent =
         'Search result not successful. Enter the correct movie name and try again';

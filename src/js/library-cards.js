@@ -252,7 +252,6 @@ async function onModalOpenClick(event) {
         modalCloseEl.addEventListener('click', onModalCloseClick);
         backdropEl.addEventListener('click', onBackdropElClick);
         window.addEventListener('keydown', onEscBtnClick);
-        console.log('I clicked on card');
     }
 }
 
@@ -262,8 +261,7 @@ function onModalCloseClick() {
     backdropEl.removeEventListener('click', onBackdropElClick);
     window.removeEventListener('keydown', onEscBtnClick);
 
-    // Викликаю функцію ререндеру вмісту сторінки бібліотеки
-    // Умови для ререндеру
+    // Викликаю функцію перерендеру вмісту сторінки бібліотеки
     if (cards.dataset.position === 'watched') {
         let currDataPage = Number(cards.dataset.page);
         contentRender(WATCHED_STORAGE_KEY, 'watched', currDataPage);
@@ -272,16 +270,11 @@ function onModalCloseClick() {
         const filmArr = readFromLS(QUEUE_STORAGE_KEY);
         let allPages = splitArrayOnSubarrays(filmArr).length;
         let arrPortion = splitArrayOnSubarrays(filmArr)[renderFilmCardPage];
-        console.log('allPages :>> ', allPages);
-        console.log('arrPortion :>> ', arrPortion);
 
         if (cards.dataset.page === allPages && arrPortion.length === 1) {
             contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
             return;
         }
-
-        // Якщо наш атрибут dataset.page === allPages
-        // І якщо arrPortion.length === 1
 
         let currDataPage = Number(cards.dataset.page);
         contentRender(QUEUE_STORAGE_KEY, 'queued', currDataPage);
