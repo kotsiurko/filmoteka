@@ -32,9 +32,9 @@ export class MovieDB {
     );
   }
 
-  fetchSearch() {
+  fetchSearch(page) {
     // return axios.get(`${this.#BASE_URL}/trending/movie/week?api_key=${this.#API_KEY}`, searchParams);
-    return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}`);
+    return axios.get(`${this.#BASE_URL}/search/movie?api_key=${this.#API_KEY}&query=${this.searchQuery}&page=${page}`);
   }
 
   fetchMovieById(id) {
