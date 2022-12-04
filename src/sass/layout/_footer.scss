@@ -1,0 +1,89 @@
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.container-footer {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: $footer-text-color;
+
+  .footer__image {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  @include _mobile {
+    // width: 320px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @include _tablet {
+    width: 768px;
+    padding-left: 75px;
+    padding-right: 75px;
+  }
+
+  @include _desktop {
+    width: 1024px;
+    padding-left: 71px;
+    padding-right: 71px;
+  }
+}
+
+.footer {
+  background-color: $footer-bg-color;
+}
+
+.copyright {
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  padding-top: 29px;
+  padding-bottom: 10px;
+}
+
+.developers {
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+.page__footer {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@include _tablet {
+  .page__footer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .copyright {
+    padding-top: 30px;
+    padding-bottom: 28px;
+  }
+  .developers {
+    padding-top: 30px;
+    padding-bottom: 28px;
+  }
+
+  .page__footer {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+.team-modal {
+  cursor: pointer;
+  text-decoration: underline;
+  @include transition(all);
+  &:hover,
+  &:focus {
+    color: $accent-color;
+  }
+}
