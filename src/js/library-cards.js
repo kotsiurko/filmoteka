@@ -26,7 +26,7 @@ modalOpenEl.addEventListener('click', onModalOpenClick);
 
 // ==============================================
 // Початкова ініціалізація сторінки
-onLSLoadWatched();
+onLSLoadWatched("watched films");
 // ==============================================
 
 
@@ -48,11 +48,21 @@ function readFromLS(key) {
 // Функції-обробники перемикача в хедері
 // Функція-обробник кліку перемикача QUEUE
 function onLSLoadWatched() {
+    // перевірка на наявність масиву в ЛС
+    let filmsArray = JSON.parse(localStorage.getItem(WATCHED_STORAGE_KEY));
+    if (filmsArray === null) {
+        return;
+    }
     contentRender(WATCHED_STORAGE_KEY, 'watched', 1);
 }
 
 // Функція-обробник кліку перемикача WATCHED
 function onLSLoadQueue() {
+    // перевірка на наявність масиву в ЛС
+    let filmsArray = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY));
+    if (filmsArray === null) {
+        return;
+    }
     contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
 }
 // ===========================================================
@@ -80,7 +90,6 @@ function contentRender(storageKey, attrib, currPage) {
     // (тобто масива в масиві) починається з 0
     renderFilmCardPage = currPage - 1;
     let arrPortion = splitArrayOnSubarrays(filmArr)[renderFilmCardPage];
-    console.log(arrPortion);
 
     // рендерить масив фільмів
     renderFilmCards(arrPortion, currPage);
@@ -146,8 +155,6 @@ function splitArrayOnSubarrays(array) {
 
 // Функція рендеру кнопок пагінації
 function paginationMarkupRender(currentPage, allPages) {
-    // currentPage = currentPage + 1;
-    console.log(currentPage);
     let markup = '';
     let beforeTwoPage = currentPage - 2;
     let beforePage = currentPage - 1;
@@ -264,6 +271,16 @@ function onModalCloseClick() {
     modalCloseEl.removeEventListener('click', onModalCloseClick);
     backdropEl.removeEventListener('click', onBackdropElClick);
     window.removeEventListener('keydown', onEscBtnClick);
+
+    // Викликаю функцію ререндеру вмісту сторінки бібліотеки
+    // Умови для ререндеру
+    if (cards.dataset.position === "queued") {
+        contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
+    }
+    if (cards.dataset.position === "watched") {
+        contentRender(WATCHED_STORAGE_KEY, 'watched', 1);
+    }
+
 }
 
 function onBackdropElClick(event) {
