@@ -13,6 +13,10 @@ export function numberConverter(number) {
     // але не цілі числа
     if (number / 10 < 1) {
         numRound = (Math.round(number * 10) / 10).toString();
+        if (numRound.length === 1) {
+            numString = String(numRound) + ".0";
+            return numString;
+        }
         numString = String(numRound).padEnd(3, '0');
         return numString;
     }
