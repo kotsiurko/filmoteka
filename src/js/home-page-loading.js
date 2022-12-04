@@ -24,7 +24,7 @@ async function onSearchFormSubmit(event) {
   cardsEl.dataset.position = searchAttr;
 
   const inputSearchEl = event.target.elements.query.value.trim();
-  if (inputSearchEl.length === 0) {
+  if (!inputSearchEl.length) {
     searchResField.textContent = 'Please enter your request';
     setTimeout(() => {
       searchResField.textContent = '';
@@ -48,7 +48,7 @@ async function anotherFetchSearch(globalCurrentPage) {
     paginationMarkup(fetchCurrentPage, fetchTotalPages);
 
     searchFieldEl.value = '';
-    if (data.results.length === 0) {
+    if (!data.results.length) {
       warningField.textContent =
         'Search result not successful. Enter the correct movie name and try again';
       setTimeout(() => {
@@ -107,7 +107,7 @@ export function renderFilmCards(films) {
       genreStr = newGenres.slice(0, 2).join(', ') + ', Other';
     }
 
-    if (film.genre_ids.length === 0) {
+    if (!film.genre_ids.length) {
       genreStr = 'Other';
     }
 
