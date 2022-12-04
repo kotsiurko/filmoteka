@@ -67,24 +67,30 @@ async function onModalOpenClick(event) {
       // зчитування інформації з дата-атрибуту кнопки
       const modalFilmIdEl = document.querySelector('[data-filmid]');
       const modalFilmId = modalFilmIdEl.dataset.filmid;
-      
+
       // слухач кнопки трейлера і колбек при кліку по ньому
-       const trailerBtnEl = document.querySelector(".trailer-link");
-       console.log(trailerBtnEl);
-       trailerBtnEl.addEventListener('click', onTrailerClick);
+      const trailerBtnEl = document.querySelector(".trailer-link");
+      const noTrailerInformer = document.querySelector(".msg-trailer");
+      console.log(trailerBtnEl);
+      trailerBtnEl.addEventListener('click', onTrailerClick);
       function onTrailerClick(e) {
-        
+
         movieDB.getMovieTrailer(FilmID).then(data => {
           const trailerKey = data.data.results.find(el => el.name === 'Official Trailer').key;
           console.log(trailerKey);
-          const instance = basicLightbox.create(`<iframe width="560" height="280" class= "iframe" src="https://www.youtube.com/embed/JaV7mmc9HGw" title="YouTube video player" frameborder="0" allowfullscreen></iframe>`);
+
+          const instance = basicLightbox.create(`<iframe width="560" height="280" class= "iframe" src="https://www.youtube.com/embed/${trailerKey}" title="YouTube video player" frameborder="0" allowfullscreen></iframe>`);
           instance.show()
           //  modalContainerEl.insertAdjacentHTML('beforeend', 
           //    `<iframe width="280" height="240" src="https://www.youtube.com/embed/${trailerKey}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           //    `)
         }
-          
-        );
+
+        ).catch(err => {
+          trailerBtnEl.innerHTML = "Sorry, but trailer not found";
+          trailerBtnEl.disabled = true;
+          console.log(err);
+        });
       }
 
       // ================================================
@@ -322,7 +328,7 @@ function renderFilmCard(data) {
       <button class="trailer-link">
       watch trailer</button>
         </div>`;
-  
+
   modalContainerEl.innerHTML = markup;
 }
 

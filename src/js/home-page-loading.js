@@ -1,5 +1,5 @@
 import { MovieDB } from './api-service';
-import cardTemplate from '../templates/film-card.hbs';
+import cardTemplate from '../templates/film-card-home.hbs';
 import genres from './genres.json';
 import { loaderRender } from './preloader';
 import { numberConverter } from './prepare-number';
