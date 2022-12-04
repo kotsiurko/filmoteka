@@ -269,7 +269,7 @@ function renderFilmCard(data) {
   const markup = `
   <div hidden data-filmid="${id}"></div>
       <img src="${posterPath}" class="modal-image" alt="${title}" />
-           <div class="description-container">
+           <div class="description-containegit branch r">
         <h2 class="film-heading">${title}</h2>
         <ul class="film-info__list">
           <li class="film-info__item">
