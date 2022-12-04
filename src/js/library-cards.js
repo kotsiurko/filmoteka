@@ -13,6 +13,8 @@ const watchedFilmListBtnEl = document.getElementById('js-WatchedButton');
 const queuedFilmListBtnEl = document.getElementById('js-QueueButton');
 const WATCHED_STORAGE_KEY = 'watched films';
 const QUEUE_STORAGE_KEY = 'films in queue';
+const watchedAttr = 'watched';
+const queuedAttr = 'queued';
 let globalCurrentPage = 1;
 let renderFilmCardPage = null;
 
@@ -24,10 +26,12 @@ queuedFilmListBtnEl.addEventListener('click', onLSLoadQueue);
 // слухач на батьківський UL карток
 modalOpenEl.addEventListener('click', onModalOpenClick);
 
-// ==============================================
+// ================================================
 // Початкова ініціалізація сторінки
-onLSLoadWatched('watched films');
-// ==============================================
+onLSLoadWatched(WATCHED_STORAGE_KEY);
+// ================================================
+
+
 
 // ================================================
 // Функція зчитування даних з ЛС
@@ -42,6 +46,8 @@ function readFromLS(key) {
 }
 // ================================================
 
+
+
 // ===========================================================
 // Функції-обробники перемикача в хедері
 // Функція-обробник кліку перемикача QUEUE
@@ -52,7 +58,7 @@ function onLSLoadWatched() {
         return;
     }
 
-    contentRender(WATCHED_STORAGE_KEY, 'watched', 1);
+    contentRender(WATCHED_STORAGE_KEY, watchedAttr, 1);
 }
 
 // Функція-обробник кліку перемикача WATCHED
@@ -62,9 +68,11 @@ function onLSLoadQueue() {
     if (filmsArray === null) {
         return;
     }
-    contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
+    contentRender(QUEUE_STORAGE_KEY, queuedAttr, 1);
 }
 // ===========================================================
+
+
 
 // ===========================================================
 // Універсальна функція вимальовки всього контенту на стоірнці
@@ -132,10 +140,11 @@ function renderFilmCards(films) {
 }
 // ===========================================================
 
-// ======================================
+
+
+// ===========================================================
 // PAGINATION
-// Обробка результатів пошуку
-// ======================================
+// ===========================================================
 
 paginationBox.addEventListener('click', onPaginationLibraryClick);
 
@@ -204,27 +213,27 @@ function onPaginationLibraryClick(event) {
     }
     if (event.target.textContent === '🡸') {
         window.scrollTo(0, 0);
-        if (cards.dataset.position === 'watched') {
+        if (cards.dataset.position === watchedAttr) {
             globalCurrentPage -= 1;
-            contentRender(WATCHED_STORAGE_KEY, 'watched', globalCurrentPage);
+            contentRender(WATCHED_STORAGE_KEY, watchedAttr, globalCurrentPage);
             return;
         }
-        if (cards.dataset.position === 'queued') {
+        if (cards.dataset.position === queuedAttr) {
             globalCurrentPage -= 1;
-            contentRender(QUEUE_STORAGE_KEY, 'queued', globalCurrentPage);
+            contentRender(QUEUE_STORAGE_KEY, queuedAttr, globalCurrentPage);
             return;
         }
     }
     if (event.target.textContent === '🡺') {
         window.scrollTo(0, 0);
-        if (cards.dataset.position === 'watched') {
+        if (cards.dataset.position === watchedAttr) {
             globalCurrentPage += 1;
-            contentRender(WATCHED_STORAGE_KEY, 'watched', globalCurrentPage);
+            contentRender(WATCHED_STORAGE_KEY, watchedAttr, globalCurrentPage);
             return;
         }
-        if (cards.dataset.position === 'queued') {
+        if (cards.dataset.position === queuedAttr) {
             globalCurrentPage += 1;
-            contentRender(QUEUE_STORAGE_KEY, 'queued', globalCurrentPage);
+            contentRender(QUEUE_STORAGE_KEY, queuedAttr, globalCurrentPage);
             return;
         }
     }
@@ -232,19 +241,22 @@ function onPaginationLibraryClick(event) {
     const page = Number(event.target.textContent);
     globalCurrentPage = page;
     window.scrollTo(0, 0);
-    if (cards.dataset.position === 'watched') {
-        contentRender(WATCHED_STORAGE_KEY, 'watched', globalCurrentPage);
+    if (cards.dataset.position === watchedAttr) {
+        contentRender(WATCHED_STORAGE_KEY, watchedAttr, globalCurrentPage);
         return;
     }
-    if (cards.dataset.position === 'queued') {
-        contentRender(QUEUE_STORAGE_KEY, 'queued', globalCurrentPage);
+    if (cards.dataset.position === queuedAttr) {
+        contentRender(QUEUE_STORAGE_KEY, queuedAttr, globalCurrentPage);
         return;
     }
 }
 
-// =======================================
+
+
+// ===========================================================
+// Модальне вікно
 // Функції відкриття / закриття модалки
-// =======================================
+// ===========================================================
 async function onModalOpenClick(event) {
     event.preventDefault();
     if (event.target.closest('li')) {
@@ -262,22 +274,22 @@ function onModalCloseClick() {
     window.removeEventListener('keydown', onEscBtnClick);
 
     // Викликаю функцію перерендеру вмісту сторінки бібліотеки
-    if (cards.dataset.position === 'watched') {
+    if (cards.dataset.position === watchedAttr) {
         let currDataPage = Number(cards.dataset.page);
-        contentRender(WATCHED_STORAGE_KEY, 'watched', currDataPage);
+        contentRender(WATCHED_STORAGE_KEY, watchedAttr, currDataPage);
     }
-    if (cards.dataset.position === 'queued') {
+    if (cards.dataset.position === queuedAttr) {
         const filmArr = readFromLS(QUEUE_STORAGE_KEY);
         let allPages = splitArrayOnSubarrays(filmArr).length;
         let arrPortion = splitArrayOnSubarrays(filmArr)[renderFilmCardPage];
 
         if (cards.dataset.page === allPages && arrPortion.length === 1) {
-            contentRender(QUEUE_STORAGE_KEY, 'queued', 1);
+            contentRender(QUEUE_STORAGE_KEY, queuedAttr, 1);
             return;
         }
 
         let currDataPage = Number(cards.dataset.page);
-        contentRender(QUEUE_STORAGE_KEY, 'queued', currDataPage);
+        contentRender(QUEUE_STORAGE_KEY, queuedAttr, currDataPage);
     }
 }
 
@@ -292,4 +304,4 @@ function onEscBtnClick(event) {
         onModalCloseClick();
     }
 }
-// =======================================
+// ===========================================================

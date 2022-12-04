@@ -10,6 +10,10 @@ const backdropEl = document.querySelector('.backdrop');
 const modalContainerEl = document.querySelector('.tablet-container');
 const body = document.querySelector('body');
 
+const addToWatched = 'Add to Watched';
+const removeFromWatched = 'Remove from Watched';
+const addToQueue = 'Add to queue';
+const removeFromQueue = 'Remove from Queue';
 const WATCHED_STORAGE_KEY = 'watched films';
 const QUEUE_STORAGE_KEY = 'films in queue';
 
@@ -34,22 +38,13 @@ function onEscBtnClick(event) {
     body.classList.remove('noScroll');
   }
 }
-
 function onModalCloseClick() {
   modalEl.classList.add('is-hidden');
   body.classList.remove('noScroll');
   modalCloseEl.removeEventListener('click', onModalCloseClick);
   backdropEl.removeEventListener('click', onBackdropElClick);
   window.removeEventListener('keydown', onEscBtnClick);
-
-
-  // Перевірка на те, що остання порція масиву не містить одного фільму
-  // Зчитування дата атрибуту і порівняння його із довжиною великого масиву
-  // Якщо довжина малого сотаннього масиву === 1 
-
-
 }
-
 // Головна функція-обробник появи модального вікна
 async function onModalOpenClick(event) {
   event.preventDefault();
@@ -77,21 +72,16 @@ async function onModalOpenClick(event) {
       const trailerBtnEl = document.querySelector(".trailer-link");
       trailerBtnEl.addEventListener('click', onTrailerClick);
       function onTrailerClick(e) {
-
         movieDB.getMovieTrailer(FilmID).then(data => {
           const trailerKey = data.data.results.find(el => el.name === 'Official Trailer').key;
-
           const instance = basicLightbox.create(`<iframe width="560" height="280" class= "iframe" src="https://www.youtube.com/embed/${trailerKey}" title="YouTube video player" frameborder="0" allowfullscreen></iframe>`);
           instance.show()
-        }
-
-        ).catch(err => {
+        }).catch(err => {
           trailerBtnEl.innerHTML = "Sorry, but trailer not found";
           trailerBtnEl.disabled = true;
           console.log(err);
         });
       }
-
       // ================================================
       // Блок роботи із Переглянутими фільмами та ЛС
       // ================================================
@@ -99,17 +89,16 @@ async function onModalOpenClick(event) {
       // в залежності від того, чи є фільм в Переглянутих в LS
 
       // Сценарій, коли ЛС з Переглянутими повністю пустий
-      if (localStorage.getItem('watched films') === null) {
+      if (localStorage.getItem(WATCHED_STORAGE_KEY) === null) {
         // Випадок, коли ЛС чистий і ми все одно можемо записати фільм в ЛС
         watchedBtnEl.dataset.watched = 'false';
         watchedBtnEl.addEventListener('click', onBtnWatchedClick);
       }
-
       // Сценарій, коли якісь фільми вже є в ЛС
-      if (localStorage.getItem('watched films') !== null) {
+      if (localStorage.getItem(WATCHED_STORAGE_KEY) !== null) {
         // Пошук фільму в масиві збережених в ЛС
         const LS_WWATCHED_ARRAY = JSON.parse(
-          localStorage.getItem('watched films')
+          localStorage.getItem(WATCHED_STORAGE_KEY)
         );
         // Витягуємо індекс фільму з масиву збережених в ЛокалСторедж
         let foundFilmIndex = LS_WWATCHED_ARRAY.findIndex(
@@ -119,13 +108,13 @@ async function onModalOpenClick(event) {
         // якщо фільму немає в ЛС
         if (foundFilmIndex === -1) {
           watchedBtnEl.dataset.watched = 'false';
-          watchedBtnEl.textContent = 'add to Watched';
+          watchedBtnEl.textContent = addToWatched;
           watchedBtnEl.addEventListener('click', onBtnWatchedClick);
         }
         // якщо фільм є в ЛС
         if (foundFilmIndex + 1) {
           watchedBtnEl.dataset.watched = 'true';
-          watchedBtnEl.textContent = 'Remove from Watched';
+          watchedBtnEl.textContent = removeFromWatched;
           watchedBtnEl.addEventListener('click', onBtnWatchedClick);
         }
       }
@@ -138,14 +127,14 @@ async function onModalOpenClick(event) {
         // якщо data-watched="false", то
         if (watchedBtnEl.dataset.watched === 'false') {
           //	викликаю функцію запису об'єкта в ЛС;
-          addFilmToLS(data, 'watched films');
+          addFilmToLS(data, WATCHED_STORAGE_KEY);
 
           // Перемальовую картки, коли змінюю ЛС
           // renderFilmCards(data);
 
           // Перемальовую кнопку
           watchedBtnEl.dataset.watched = 'true';
-          watchedBtnEl.textContent = 'Remove from Watched';
+          watchedBtnEl.textContent = removeFromWatched;
 
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
@@ -156,14 +145,14 @@ async function onModalOpenClick(event) {
         // якщо data-watched="true", то
         if (watchedBtnEl.dataset.watched === 'true') {
           //	викликаю функцію видалення об'єкта з ЛС:
-          removeFilmFromLS(modalFilmId, 'watched films');
+          removeFilmFromLS(modalFilmId, WATCHED_STORAGE_KEY);
 
           // Перемальовую картки, кои змінюю ЛС
           // renderFilmCards(data);
 
           // Перемальовую кнопку
           watchedBtnEl.dataset.watched = 'false';
-          watchedBtnEl.textContent = 'Add to Watch';
+          watchedBtnEl.textContent = addToWatched;
 
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
@@ -181,16 +170,16 @@ async function onModalOpenClick(event) {
       // в залежності від того, чи є фільм в Черзі в LS
 
       // Сценарій, коли ЛС повністю пустий
-      if (localStorage.getItem('films in queue') === null) {
+      if (localStorage.getItem(QUEUE_STORAGE_KEY) === null) {
         // Випадок, коли ЛС з Чергою чистий і ми все одно можемо записати фільм в ЛС
         queuedBtnEl.dataset.queued = 'false';
         queuedBtnEl.addEventListener('click', onBtnQueuedClick);
         return;
       }
 
-      if (localStorage.getItem('films in queue') !== null) {
+      if (localStorage.getItem(QUEUE_STORAGE_KEY) !== null) {
         // Пошук фільму в масиві збережених в ЛС
-        const LS_ARRAY = JSON.parse(localStorage.getItem('films in queue'));
+        const LS_ARRAY = JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY));
         // Витягуємо індекс фільму з масиву збережених в ЛокалСторедж
         let foundFilmIndex = LS_ARRAY.findIndex(
           el => el.id === Number(modalFilmId)
@@ -199,13 +188,13 @@ async function onModalOpenClick(event) {
         // якщо фільму немає в ЛС
         if (foundFilmIndex === -1) {
           queuedBtnEl.dataset.queued = 'false';
-          queuedBtnEl.textContent = 'add to queue';
+          queuedBtnEl.textContent = addToQueue;
           queuedBtnEl.addEventListener('click', onBtnQueuedClick);
         }
         // якщо фільм є в ЛС
         if (foundFilmIndex + 1) {
           queuedBtnEl.dataset.queued = 'true';
-          queuedBtnEl.textContent = 'Remove from Queue';
+          queuedBtnEl.textContent = removeFromQueue;
           queuedBtnEl.addEventListener('click', onBtnQueuedClick);
         }
       }
@@ -214,10 +203,10 @@ async function onModalOpenClick(event) {
         // якщо data-queued="false", то
         if (queuedBtnEl.dataset.queued === 'false') {
           //	викликаю функцію запису об'єкта в ЛС;
-          addFilmToLS(data, 'films in queue');
+          addFilmToLS(data, QUEUE_STORAGE_KEY);
           // Перемальовую кнопку
           queuedBtnEl.dataset.queued = 'true';
-          queuedBtnEl.textContent = 'Remove from Queue';
+          queuedBtnEl.textContent = removeFromQueue;
 
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {
@@ -228,10 +217,10 @@ async function onModalOpenClick(event) {
         // якщо data-queued="true", то
         if (queuedBtnEl.dataset.queued === 'true') {
           //	викликаю функцію видалення об'єкта з ЛС:
-          removeFilmFromLS(modalFilmId, 'films in queue');
+          removeFilmFromLS(modalFilmId, QUEUE_STORAGE_KEY);
           // Перемальовую кнопку
           queuedBtnEl.dataset.queued = 'false';
-          queuedBtnEl.textContent = 'Add to Queue';
+          queuedBtnEl.textContent = addToQueue;
 
           // Викликаю колбек-функцію, яка викликає сама-себе
           modalFilmIdEl.addEventListener('click', () => {

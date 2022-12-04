@@ -25,6 +25,7 @@
     box-shadow: 6px 6px 12px $page-color;
   }
   &__img {
+    border-radius: 5px;
     position: relative;
     overflow: hidden;
     padding-bottom: 143.571429%; /* 402/280 */

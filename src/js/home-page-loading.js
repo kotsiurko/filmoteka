@@ -5,12 +5,14 @@ import { loaderRender } from './preloader';
 import { numberConverter } from './prepare-number';
 import defaultPhoto from '../images/default-photo.jpeg';
 
-const cards = document.querySelector('.cards');
+const cardsEl = document.querySelector('.cards');
 const searchFormEl = document.querySelector('#search-form');
 const searchFieldEl = document.querySelector('.search-field');
 const warningField = document.querySelector('.js-warning');
 const searchResField = document.querySelector('.js-search-results');
 let globalCurrentPage = 1;
+const searchAttr = 'searched';
+const trendsAttr = 'trends';
 
 const movieDB = new MovieDB();
 
@@ -19,7 +21,7 @@ searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
 async function onSearchFormSubmit(event, globalCurrentPage) {
   event.preventDefault();
-  cards.dataset.position = 'searched';
+  cardsEl.dataset.position = searchAttr;
 
   const inputSearchEl = event.target.elements.query.value.trim();
   if (inputSearchEl.length === 0) {
@@ -63,7 +65,7 @@ async function anotherFetchSearch(globalCurrentPage) {
 }
 
 export async function onHomePageLoad() {
-  cards.dataset.position = 'trends';
+  cardsEl.dataset.position = trendsAttr;
 
   try {
     const { data } = await movieDB.fetchTrendMovies(globalCurrentPage);
@@ -118,13 +120,6 @@ export function renderFilmCards(films) {
       posterPath = defaultImg;
     }
 
-    // if (newGenres.length >= 3) {
-    //   const strBegin = newGenres.slice(0, 2).join(', ');
-    //   genreStr = strBegin + ', Other';
-    // } else {
-    //   genreStr = newGenres.join(', ');
-    // }
-
     const rating = numberConverter(film.vote_average);
 
     // Формую підготовлений об'єкт даних для закидання в handlebar
@@ -137,11 +132,10 @@ export function renderFilmCards(films) {
     };
     return editedFilm;
   });
-  cards.innerHTML = cardTemplate(markup);
+  cardsEl.innerHTML = cardTemplate(markup);
 }
 
 // Добираємся до пагінації результатів пошуку
-
 export function paginationMarkup(currentPage, allPages) {
   let markup = '';
   let beforeTwoPage = currentPage - 2;
@@ -182,10 +176,7 @@ export function paginationMarkup(currentPage, allPages) {
 }
 
 const paginationBox = document.querySelector('.pagination__list');
-
 paginationBox.addEventListener('click', onPaginationHomeClick);
-
-// paginationMarkup();
 
 async function onPaginationHomeClick(event) {
   if (event.target.nodeName !== 'LI') {
@@ -196,15 +187,14 @@ async function onPaginationHomeClick(event) {
   }
   if (event.target.textContent === '🡸') {
     window.scrollTo(0, 0);
-    if (cards.dataset.position === 'trends') {
+    if (cardsEl.dataset.position === trendsAttr) {
       onHomePageLoad((globalCurrentPage -= 1)).then(data => {
         renderFilmCards(data.results);
         paginationMarkup(data.page, data.total_pages);
       });
       return;
     }
-    if (cards.dataset.position === 'searched') {
-      console.log('searchres click next');
+    if (cardsEl.dataset.position === searchAttr) {
       anotherFetchSearch((globalCurrentPage -= 1)).then(data => {
         renderFilmCards(data.results);
         paginationMarkup(data.page, data.total_pages);
@@ -214,15 +204,14 @@ async function onPaginationHomeClick(event) {
   }
   if (event.target.textContent === '🡺') {
     window.scrollTo(0, 0);
-    if (cards.dataset.position === 'trends') {
+    if (cardsEl.dataset.position === trendsAttr) {
       onHomePageLoad((globalCurrentPage += 1)).then(data => {
         renderFilmCards(data.results);
         paginationMarkup(data.page, data.total_pages);
       });
       return;
     }
-    if (cards.dataset.position === 'searched') {
-      console.log('searchres click next');
+    if (cardsEl.dataset.position === searchAttr) {
       anotherFetchSearch((globalCurrentPage += 1)).then(data => {
         renderFilmCards(data.results);
         paginationMarkup(data.page, data.total_pages);
@@ -235,15 +224,14 @@ async function onPaginationHomeClick(event) {
   globalCurrentPage = page;
   window.scrollTo(0, 0);
 
-  if (cards.dataset.position === 'trends') {
+  if (cardsEl.dataset.position === trendsAttr) {
     onHomePageLoad(globalCurrentPage).then(data => {
       renderFilmCards(data.results);
       paginationMarkup(data.page, data.total_pages);
     });
     return;
   }
-  if (cards.dataset.position === 'searched') {
-    console.log('searchres click next');
+  if (cardsEl.dataset.position === searchAttr) {
     anotherFetchSearch(globalCurrentPage).then(data => {
       renderFilmCards(data.results);
       paginationMarkup(data.page, data.total_pages);
