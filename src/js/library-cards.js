@@ -279,7 +279,19 @@ async function onModalOpenClick(event) {
         modalCloseEl.addEventListener('click', onModalCloseClick);
         backdropEl.addEventListener('click', onBackdropElClick);
         window.addEventListener('keydown', onEscBtnClick);
+        // Присвоюю модалці кількість фільмів, що є в локалСторедж
+        if (cards.dataset.position === watchedAttr) {
+            let filmAmount = readFromLS(WATCHED_STORAGE_KEY).length;
+            modalEl.dataset.filmAmount = filmAmount;
+        }
+        if (cards.dataset.position === queuedAttr) {
+            let filmAmount = readFromLS(QUEUE_STORAGE_KEY).length;
+            modalEl.dataset.filmAmount = filmAmount;
+        }
+
+
     }
+
 }
 
 function onModalCloseClick() {
@@ -289,33 +301,95 @@ function onModalCloseClick() {
     window.removeEventListener('keydown', onEscBtnClick);
 
     // =========================================================
-    // Логіка перерендеру сторінки при умові, що
-    // користувач перебуває на останній сторінці?
-    // на ній відображено лише один фільм
-    // і, при закритті модалки, він видаляє його з localStorage
-    // 
-    // data-position="watched" data-page="1"
-    let currPageAttr = Number(cards.dataset.page);
-    let renewedFilmArr = readFromLS(WATCHED_STORAGE_KEY);
-    let renewedAllPages = splitArrayOnSubarrays(renewedFilmArr).length;
+    if (cards.dataset.position === watchedAttr) {
+        // data-position="watched" data-page="1"
+        let currPageAttr = Number(cards.dataset.page);
+        let currFilmAmount = Number(modalEl.dataset.filmAmount)
+        let renewedFilmArr = readFromLS(WATCHED_STORAGE_KEY);
+        let renewedAllPages = splitArrayOnSubarrays(renewedFilmArr).length;
 
 
-    if (!renewedAllPages && currPageAttr === 1) {
-        console.log("Тут заглушка");
-        cards.innerHTML = `
+        // Перемальовака, коли в нас одна сторінка і лише один елемент на сторінці,
+        // який ми видаляємо
+        // if (!renewedAllPages && currPageAttr === 1)
+        if (!renewedAllPages) {
+            console.log("Тут заглушка");
+            emptyEl.innerHTML = `
             <div class="empty">
                 <p class="empty__text">Ooops...You didn't select any movie</p>
                 <img src="${searchMan}" alt="Man searching" class="empty__img" />
             </div>
         `;
-        return;
+            cards.innerHTML = '';
+            return;
+        }
+
+        // Перемальовка, коли в нас більше однієї сторінки,
+        // Ми перебуваємо на останній сторінці, на якій лише один елемент на сторінці,
+        // який ми видаляємо
+        if (currPageAttr > renewedAllPages) {
+            contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
+        }
+
+        // Перемальовка, коли наш атрибут, що позначає загальну кількість фільмів
+        // в локалСторедж на момент відкриття модалки не рівний довжині масиву
+        // усіх фільмів в локалСторедж.
+        // Тобто перемальовка виконуватиметься лише при видаленні фільму
+        if (currFilmAmount !== renewedFilmArr.length) {
+            contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
+        }
     }
-    // ------------------------------------------------
-    if (currPageAttr > renewedAllPages) {
-        contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
+    // =========================================================
+
+
+    // =========================================================
+    if (cards.dataset.position === queuedAttr) {
+        // data-position="watched" data-page="1"
+        let currPageAttr = Number(cards.dataset.page);
+        let currFilmAmount = Number(modalEl.dataset.filmAmount)
+        let renewedFilmArr = readFromLS(QUEUE_STORAGE_KEY);
+        let renewedAllPages = splitArrayOnSubarrays(renewedFilmArr).length;
+
+
+        // Перемальовака, коли в нас одна сторінка і лише один елемент на сторінці,
+        // який ми видаляємо
+        // if (!renewedAllPages && currPageAttr === 1) {
+        if (!renewedAllPages) {
+            console.log("Тут заглушка");
+            emptyEl.innerHTML = `
+            <div class="empty">
+                <p class="empty__text">Ooops...You didn't select any movie</p>
+                <img src="${searchMan}" alt="Man searching" class="empty__img" />
+            </div>
+        `;
+            cards.innerHTML = '';
+            return;
+        }
+
+        // Перемальовка, коли в нас більше однієї сторінки,
+        // Ми перебуваємо на останній сторінці, на якій лише один елемент на сторінці,
+        // який ми видаляємо
+        if (currPageAttr > renewedAllPages) {
+            contentRender(QUEUE_STORAGE_KEY, queuedAttr, renewedAllPages);
+        }
+
+        // Перемальовка, коли наш атрибут, що позначає загальну кількість фільмів
+        // в локалСторедж на момент відкриття модалки не рівний довжині масиву
+        // усіх фільмів в локалСторедж.
+        // Тобто перемальовка виконуватиметься лише при видаленні фільму
+        if (currFilmAmount !== renewedFilmArr.length) {
+            contentRender(QUEUE_STORAGE_KEY, queuedAttr, renewedAllPages);
+        }
     }
 
-    contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
+
+
+
+
+    // 
+
+
+
     // ------------------------------------------------
 
 
