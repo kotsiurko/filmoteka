@@ -1,6 +1,7 @@
 import { loaderRender } from './preloader';
 import cardTemplate from '../templates/film-card.hbs';
 import { numberConverter } from './prepare-number';
+import searchMan from '../images/emptyLibrary.png';
 
 const paginationBox = document.querySelector('.pagination__list');
 const cards = document.querySelector('.cards');
@@ -287,17 +288,35 @@ function onModalCloseClick() {
     backdropEl.removeEventListener('click', onBackdropElClick);
     window.removeEventListener('keydown', onEscBtnClick);
 
+    // =========================================================
+    // Логіка перерендеру сторінки при умові, що
+    // користувач перебуває на останній сторінці?
+    // на ній відображено лише один фільм
+    // і, при закритті модалки, він видаляє його з localStorage
+    // 
     // data-position="watched" data-page="1"
     let currPageAttr = Number(cards.dataset.page);
     let renewedFilmArr = readFromLS(WATCHED_STORAGE_KEY);
     let renewedAllPages = splitArrayOnSubarrays(renewedFilmArr).length;
 
-    // console.log(currPageAttr);
-    // console.log(renewedAllPages);
 
+    if (!renewedAllPages && currPageAttr === 1) {
+        console.log("Тут заглушка");
+        cards.innerHTML = `
+            <div class="empty">
+                <p class="empty__text">Ooops...You didn't select any movie</p>
+                <img src="${searchMan}" alt="Man searching" class="empty__img" />
+            </div>
+        `;
+        return;
+    }
+    // ------------------------------------------------
     if (currPageAttr > renewedAllPages) {
         contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
     }
+
+    contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
+    // ------------------------------------------------
 
 
 }
