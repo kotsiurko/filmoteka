@@ -17,6 +17,7 @@ const watchedAttr = 'watched';
 const queuedAttr = 'queued';
 let globalCurrentPage = 1;
 let renderFilmCardPage = null;
+const cardsPerPage = 5;
 
 loaderRender();
 
@@ -105,17 +106,24 @@ function contentRender(storageKey, attrib, currPage) {
     }
 
     // рендерить масив фільмів
-    renderFilmCards(arrPortion, currPage);
+    renderFilmCards(arrPortion);
 
     // рендерить пагінацію
     paginationMarkupRender(currPage, allPages);
 }
 // ===========================================================
 
+
+
 // ===========================================================
-// Функція, що підготовлює дані в картки для рендеру
-// - Приймає масив об'єктів
-// - Рендерить об'єкти в картки на сторінці
+/**
+ * 
+ * @param {array} films - portion of films to render on page
+ * @returns nothing
+ * it creates markup with films on page and
+ * using handlebar 'cardTemplate'
+ * render content
+ */
 function renderFilmCards(films) {
     if (films === undefined) {
         return;
@@ -143,25 +151,31 @@ function renderFilmCards(films) {
 
 
 // ===========================================================
-// PAGINATION
-// ===========================================================
-
-paginationBox.addEventListener('click', onPaginationLibraryClick);
-
-// Функція розбивки масиву на підмасиви
-// - повертає масив масивів
+/**
+ * @param {array} array - array of film objects that are located in localStorage
+ * @returns - array of arrays - array with splited subarray according to 'cardsPerPage'
+ * [[], [], []] 
+ * length of this big array - is the amount of pages
+ */
 function splitArrayOnSubarrays(array) {
-    const allCards = 20;
-    const sliceArr = array
+    const splitedArray = array
         .map(function (el, ind) {
-            return ind % allCards === 0 ? array.slice(ind, ind + allCards) : null;
+            return ind % cardsPerPage === 0 ? array.slice(ind, ind + cardsPerPage) : null;
         })
         .filter(function (el) {
             return el;
         });
-    // Повертає масив масивів
-    return sliceArr;
+    return splitedArray;
 }
+// ===========================================================
+
+
+
+// ===========================================================
+// PAGINATION
+// ===========================================================
+
+paginationBox.addEventListener('click', onPaginationLibraryClick);
 
 // Функція рендеру кнопок пагінації
 function paginationMarkupRender(currentPage, allPages) {
@@ -273,24 +287,19 @@ function onModalCloseClick() {
     backdropEl.removeEventListener('click', onBackdropElClick);
     window.removeEventListener('keydown', onEscBtnClick);
 
-    // Викликаю функцію перерендеру вмісту сторінки бібліотеки
-    if (cards.dataset.position === watchedAttr) {
-        let currDataPage = Number(cards.dataset.page);
-        contentRender(WATCHED_STORAGE_KEY, watchedAttr, currDataPage);
-    }
-    if (cards.dataset.position === queuedAttr) {
-        const filmArr = readFromLS(QUEUE_STORAGE_KEY);
-        let allPages = splitArrayOnSubarrays(filmArr).length;
-        let arrPortion = splitArrayOnSubarrays(filmArr)[renderFilmCardPage];
+    // data-position="watched" data-page="1"
+    let currPageAttr = Number(cards.dataset.page);
+    let renewedFilmArr = readFromLS(WATCHED_STORAGE_KEY);
+    let renewedAllPages = splitArrayOnSubarrays(renewedFilmArr).length;
 
-        if (cards.dataset.page === allPages && arrPortion.length === 1) {
-            contentRender(QUEUE_STORAGE_KEY, queuedAttr, 1);
-            return;
-        }
+    // console.log(currPageAttr);
+    // console.log(renewedAllPages);
 
-        let currDataPage = Number(cards.dataset.page);
-        contentRender(QUEUE_STORAGE_KEY, queuedAttr, currDataPage);
+    if (currPageAttr > renewedAllPages) {
+        contentRender(WATCHED_STORAGE_KEY, watchedAttr, renewedAllPages);
     }
+
+
 }
 
 function onBackdropElClick(event) {
@@ -304,4 +313,3 @@ function onEscBtnClick(event) {
         onModalCloseClick();
     }
 }
-// ===========================================================
